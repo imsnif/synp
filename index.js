@@ -22,34 +22,38 @@ function getSha1HexChecksum (base64String, packageDir, packageName) {
   }
 }
 
-function buildYarnTree ({dependencies, packageDir, memo = {}}) {
-  return Object.keys(dependencies).reduce((memo, packageName) => {
+function buildYarnDependencies (requires, packageDir, packageName, tree) {
+  if (!requires) return undefined
+  return Object.keys(requires).reduce((depMemo, depPackageName) => {
+    const version = requires[depPackageName]
+    const semverStringDep = getSemverString(path.join(packageDir, 'node_modules', packageName), depPackageName)
+    depMemo[depPackageName] = semverStringDep
+    const existingEntryInMemo = tree[`${depPackageName}@${version}`]
+    const existingSemverStringsInMemo = existingEntryInMemo && existingEntryInMemo.semverStrings ? existingEntryInMemo.semverStrings : []
+    tree[`${depPackageName}@${version}`] = Object.assign({}, existingEntryInMemo || {}, {semverStrings: existingSemverStringsInMemo.concat(semverStringDep)})
+    return depMemo
+  }, {})
+}
+
+function buildYarnTree ({dependencies, packageDir, tree = {}}) {
+  return Object.keys(dependencies).reduce((tree, packageName) => {
     const { version, resolved, integrity, requires } = dependencies[packageName]
     const deps = dependencies[packageName].dependencies
-    if (deps) buildYarnTree({dependencies: deps, packageDir: path.join(packageDir, 'node_modules', packageName), memo})
+    if (deps) buildYarnTree({dependencies: deps, packageDir: path.join(packageDir, 'node_modules', packageName), tree})
     const semverString = getSemverString(packageDir, packageName)
     const hexChecksum = getSha1HexChecksum(integrity, packageDir, packageName)
     const yarnStyleResolved = `${resolved}#${hexChecksum}`
-    const yarnStyleDeps = requires ? Object.keys(requires).reduce((depMemo, depPackageName) => {
-      const version = requires[depPackageName]
-      const semverStringDep = getSemverString(path.join(packageDir, 'node_modules', packageName), depPackageName)
-      depMemo[depPackageName] = semverStringDep
-      const existingEntryInMemo = memo[`${depPackageName}@${version}`]
-      const existingSemverStringsInMemo = existingEntryInMemo && existingEntryInMemo.semverStrings ? existingEntryInMemo.semverStrings : []
-      memo[`${depPackageName}@${version}`] = Object.assign({}, existingEntryInMemo || {}, {semverStrings: existingSemverStringsInMemo.concat(semverStringDep)})
-      return depMemo
-    }, {}) : undefined
-    const existingEntryInMemo = memo[`${packageName}@${version}`]
-    const existingSemverStringsInMemo = existingEntryInMemo && existingEntryInMemo.semverStrings ? existingEntryInMemo.semverStrings : []
-    // this is not the yarn.lock semver format! this is just so the memo will be unique
-    memo[`${packageName}@${version}`] = Object.assign({}, memo[`${packageName}@${version}`] || {}, {
+    const yarnStyleDeps = buildYarnDependencies(requires, packageDir, packageName, tree)
+    const existingEntryInTree = tree[`${packageName}@${version}`]
+    const existingSemverStringsInTree = existingEntryInTree && existingEntryInTree.semverStrings ? existingEntryInTree.semverStrings : []
+    tree[`${packageName}@${version}`] = Object.assign({}, tree[`${packageName}@${version}`] || {}, {
       version,
-      semverStrings: existingSemverStringsInMemo.concat(semverString || []),
+      semverStrings: existingSemverStringsInTree.concat(semverString || []),
       resolved: yarnStyleResolved,
       dependencies: yarnStyleDeps
     })
-    return memo
-  }, memo)
+    return tree
+  }, tree)
 }
 
 function formatSemverStrings (objectWithSemver) {
