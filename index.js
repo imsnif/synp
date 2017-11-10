@@ -52,6 +52,22 @@ function buildYarnTree ({dependencies, packageDir, memo = {}}) {
   }, memo)
 }
 
+function formatSemverStrings (objectWithSemver) {
+  return Object.keys(objectWithSemver).reduce((memo, packageNameWithVersion) => {
+    const { semverStrings } = objectWithSemver[packageNameWithVersion]
+    const packageName = packageNameWithVersion.replace(/@.+?$/, '') // TODO: handle scopes
+    semverStrings.reduce((memo, semverString) => {
+      memo[`${packageName}@${semverString}`] = Object.assign(
+        {},
+        objectWithSemver[packageNameWithVersion],
+        { semverStrings: undefined }
+      )
+      return memo
+    }, memo)
+    return memo
+  }, {})
+}
+
 module.exports = {
   yarnToNpm (packageDir) {
     // TODO: error checking
@@ -130,26 +146,7 @@ module.exports = {
     const packageLock = JSON.parse(packageLockFileString)
     const { dependencies } = packageLock
     const objectWithSemver = buildYarnTree({dependencies, packageDir})
-    const object = Object.keys(objectWithSemver).reduce((memo, packageNameWithVersion) => {
-      const { semverStrings } = objectWithSemver[packageNameWithVersion]
-      const packageName = packageNameWithVersion.replace(/@.+?$/, '') // TODO: handle scopes
-      if (Array.isArray(semverStrings)) {
-        semverStrings.forEach(s => {
-          memo[`${packageName}@${s}`] = Object.assign(
-            {},
-            objectWithSemver[packageNameWithVersion],
-            { semverStrings: undefined }
-          )
-        })
-      } else { // TODO: this should be eliminated
-        memo[`${packageName}@${undefined}`] = Object.assign(
-          {},
-          objectWithSemver[packageNameWithVersion],
-          { semverStrings: undefined }
-        )
-      }
-      return memo
-    }, {})
+    const object = formatSemverStrings(objectWithSemver)
     return lockfile.stringify(object)
   }
 }
