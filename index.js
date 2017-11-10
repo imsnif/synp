@@ -53,7 +53,6 @@ function buildYarnTree ({dependencies, packageDir, memo = {}}) {
 }
 
 module.exports = {
-  // yarnToNpm (yarnFileString, name, version) {
   yarnToNpm (packageDir) {
     // TODO: error checking
     const packageJson = fs.readFileSync(path.join(packageDir, 'package.json'))
