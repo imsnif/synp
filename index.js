@@ -6,9 +6,8 @@ const crypto = require('crypto')
 function getSemverString (packageDir, packageName) {
   // TODO: error checking
   const packageJson = require(`${packageDir}/package.json`)
-  const { dependencies, devDependencies } = packageJson // TODO: optional deps? other deps?
-  const allDeps = Object.assign({}, devDependencies, dependencies)
-  // TODO: what do yarn/npm do when there are different versions in devDependencies and dependencies? is it possible?
+  const { dependencies, devDependencies, optionalDependencies } = packageJson
+  const allDeps = Object.assign({}, devDependencies, dependencies, optionalDependencies)
   return allDeps[packageName]
 }
 
