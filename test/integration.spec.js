@@ -96,3 +96,24 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
     t.end()
   }
 })
+
+test.only('translate package-lock to yarn.lock with scopes', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/deps-with-scopes`
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const res = lockfile.parse(npmToYarn(path).replace(/registry.yarnpkg.com/g, 'registry.npmjs.org'))
+    const yarnLockWithNpmRegistry = yarnLock.replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
+    const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
+    const { dependencies } = JSON.parse(packageLock)
+    const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
+    const yarnLockObjReplaced = replaceNonSha1(yarnLockObject, resolvedWithNonSha1Hashes)
+    const resReplaced = replaceNonSha1(res, resolvedWithNonSha1Hashes)
+    process.exit()
+    t.deepEquals(resReplaced, yarnLockObjReplaced, 'result is equal to yarn.lock file')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
