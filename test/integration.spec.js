@@ -50,8 +50,8 @@ test('translate with one root dependency', async t => {
     const path = `${__dirname}/fixtures/single-root-dep`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
-    t.deepEquals(JSON.parse(yarnToNpm(path)), JSON.parse(packageLock))
-    t.deepEquals(lockfile.parse(npmToYarn(path)), lockfile.parse(yarnLock))
+    t.deepEquals(JSON.parse(yarnToNpm(path)), JSON.parse(packageLock), 'can convert yarn to npm')
+    t.deepEquals(lockfile.parse(npmToYarn(path)), lockfile.parse(yarnLock), 'can convert npm to yarn')
   } catch (e) {
     t.fail(e.stack)
     t.end()
@@ -97,7 +97,7 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
   }
 })
 
-test.only('translate package-lock to yarn.lock with scopes', async t => {
+test('translate package-lock to yarn.lock with scopes', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/deps-with-scopes`
@@ -110,8 +110,7 @@ test.only('translate package-lock to yarn.lock with scopes', async t => {
     const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
     const yarnLockObjReplaced = replaceNonSha1(yarnLockObject, resolvedWithNonSha1Hashes)
     const resReplaced = replaceNonSha1(res, resolvedWithNonSha1Hashes)
-    process.exit()
-    t.deepEquals(resReplaced, yarnLockObjReplaced, 'result is equal to yarn.lock file')
+    t.deepEquals(resReplaced.object, yarnLockObjReplaced.object, 'result is equal to yarn.lock file')
   } catch (e) {
     t.fail(e.stack)
     t.end()
