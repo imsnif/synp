@@ -2,74 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const lockfile = require('@yarnpkg/lockfile')
 const crypto = require('crypto')
+const nmTree = require('./lib/nmtree')
 
-function getSemverString (packageDir, packageName) {
-  // TODO: error checking
-  const packageJson = require(`${packageDir}/package.json`)
-  const { dependencies, devDependencies, optionalDependencies } = packageJson
-  const allDeps = Object.assign({}, devDependencies, dependencies, optionalDependencies)
-  return allDeps[packageName]
-}
-
-function getSha1HexChecksum (base64String, packageDir, packageName) {
-  if (/^sha1-/.test(base64String)) {
-    return Buffer.from(base64String.replace(/^sha1-/, ''), 'base64').toString('hex')
-  } else {
-    // see caveats in README
-    // TODO make generic
-    return Buffer.from(base64String.replace(/^sha512-/, ''), 'base64').toString('hex')
-  }
-}
-
-function buildYarnDependencies (requires, packageDir, packageName, tree) {
-  if (!requires) return undefined
-  return Object.keys(requires).reduce((depMemo, depPackageName) => {
-    const version = requires[depPackageName]
-    const semverStringDep = getSemverString(path.join(packageDir, 'node_modules', packageName), depPackageName)
-    depMemo[depPackageName] = semverStringDep
-    const existingEntryInMemo = tree[`${depPackageName}@${version}`]
-    const existingSemverStringsInMemo = existingEntryInMemo && existingEntryInMemo.semverStrings ? existingEntryInMemo.semverStrings : []
-    tree[`${depPackageName}@${version}`] = Object.assign({}, existingEntryInMemo || {}, {semverStrings: existingSemverStringsInMemo.concat(semverStringDep)})
-    return depMemo
-  }, {})
-}
-
-function buildYarnTree ({dependencies, packageDir, tree = {}}) {
-  return Object.keys(dependencies).reduce((tree, packageName) => {
-    const { version, resolved, integrity, requires } = dependencies[packageName]
-    const deps = dependencies[packageName].dependencies
-    if (deps) buildYarnTree({dependencies: deps, packageDir: path.join(packageDir, 'node_modules', packageName), tree})
-    const semverString = getSemverString(packageDir, packageName)
-    const hexChecksum = getSha1HexChecksum(integrity, packageDir, packageName)
-    const yarnStyleResolved = `${resolved}#${hexChecksum}`
-    const yarnStyleDeps = buildYarnDependencies(requires, packageDir, packageName, tree)
-    const existingEntryInTree = tree[`${packageName}@${version}`]
-    const existingSemverStringsInTree = existingEntryInTree && existingEntryInTree.semverStrings ? existingEntryInTree.semverStrings : []
-    tree[`${packageName}@${version}`] = Object.assign({}, tree[`${packageName}@${version}`] || {}, {
-      version,
-      semverStrings: existingSemverStringsInTree.concat(semverString || []),
-      resolved: yarnStyleResolved,
-      dependencies: yarnStyleDeps
-    })
-    return tree
-  }, tree)
-}
-
-function formatSemverStrings (objectWithSemver) {
-  return Object.keys(objectWithSemver).reduce((memo, packageNameWithVersion) => {
-    const { semverStrings } = objectWithSemver[packageNameWithVersion]
-    const packageName = packageNameWithVersion.replace(/@.+?$/, '') // TODO: handle scopes
-    semverStrings.reduce((memo, semverString) => {
-      memo[`${packageName}@${semverString}`] = Object.assign(
-        {},
-        objectWithSemver[packageNameWithVersion],
-        { semverStrings: undefined }
-      )
-      return memo
-    }, memo)
-    return memo
-  }, {})
-}
+const util = require('util')
 
 function buildSemverDict (object) {
   return Object.keys(object).reduce((memo, packageNameAndVersion) => {
@@ -130,6 +65,116 @@ function buildNpmDependencies (deps, duplicates) {
   }, {})
 }
 
+function parentPackagePath (parentPath) {
+  const dirs = parentPath.split(path.sep)
+  const pathDirs = dirs.slice(0, dirs.length - 1)
+  if (pathDirs[pathDirs.length - 1] === 'node_modules') {
+    return parentPackagePath(pathDirs.join(path.sep))
+  } else if (pathDirs.join(path.sep) === '/' || pathDirs.join(path.sep) === '') {
+    throw new Error('Could not find parent dir!')
+  } else {
+    return pathDirs.join(path.sep)
+  }
+}
+
+function findDepVersion (dep, nodeModulesTree, parentPath) {
+  const depPath = path.join(parentPath, 'node_modules', dep)
+  if (nodeModulesTree[depPath]) {
+    const { version } = nodeModulesTree[depPath]
+    return version
+  } else {
+    const oneLevelDown = parentPackagePath(parentPath)
+    if (oneLevelDown === '/') {
+      throw new Error(`Could not find package ${dep}`)
+    }
+    return findDepVersion(dep, nodeModulesTree, oneLevelDown)
+  }
+}
+
+function npmToYarnResolved (resolved, integrity) {
+  const hexChecksum = /^sha1-/.test(integrity)
+    ? Buffer.from(integrity.replace(/^sha1-/, ''), 'base64').toString('hex')
+    : Buffer.from(integrity.replace(/^sha512-/, ''), 'base64').toString('hex')
+    // see caveats in README
+  return `${resolved}#${hexChecksum}`
+}
+
+function flattenPackageLock (deps, flattenedTree) {
+  flattenedTree = flattenedTree || {}
+  return Object.keys(deps).reduce((flattenedTree, depName) => {
+    const { version, dependencies } = deps[depName]
+    flattenedTree[`${depName}@${version}`] = deps[depName]
+    if (dependencies) flattenPackageLock(dependencies, flattenedTree)
+    return flattenedTree
+  }, flattenedTree)
+}
+
+function buildYarnTree (nodeModulesTree, packageLock) {
+  const flattenedPackageLock = flattenPackageLock(packageLock.dependencies)
+  return Object.keys(nodeModulesTree).reduce((tree, path) => {
+    const { name, version, dependencies, optionalDependencies } = nodeModulesTree[path]
+    if (name !== packageLock.name) {
+      const { resolved, integrity } = flattenedPackageLock[`${name}@${version}`]
+      const yarnStyleResolved = npmToYarnResolved(resolved, integrity)
+      if (optionalDependencies) {
+        Object.keys(optionalDependencies).forEach(optDepName => {
+          delete dependencies[optDepName]
+        })
+      }
+      tree[name] = Object.assign({}, tree[name] || {}, {
+        [version]: Object.assign({},
+          tree[name] && tree[name][version]
+            ? tree[name][version]
+            : {},
+          { resolved: yarnStyleResolved },
+          dependencies && Object.keys(dependencies).length > 0 ? {dependencies} : {},
+          optionalDependencies && Object.keys(optionalDependencies).length > 0 ? {optionalDependencies} : {}
+        )
+      })
+    }
+    if (dependencies || optionalDependencies) {
+      const combinedDeps = Object.assign({}, dependencies, optionalDependencies)
+      Object.keys(combinedDeps).forEach(dep => {
+        const depSemver = combinedDeps[dep]
+        try {
+          const depVersion = findDepVersion(dep, nodeModulesTree, path)
+          tree[dep] = Object.assign({}, tree[dep] || {}, {
+            [depVersion]: Object.assign({},
+              tree[dep] && tree[dep][depVersion] ? tree[dep][depVersion] : {},
+              {
+                semvers: tree[dep] && tree[dep][depVersion] && tree[dep][depVersion].semvers
+                  ? tree[dep][depVersion].semvers.add(depSemver)
+                  : new Set([depSemver])
+              }
+            )
+          })
+        } catch (e) {
+          // non-existent package, likely due to platform mismatch (eg. fsevents
+          // TODO: fix this!
+          return tree
+        }
+      })
+    }
+    return tree
+  }, {})
+}
+
+function formatYarnTree (yarnTree) {
+  return Object.keys(yarnTree).reduce((formatted, packageName) => {
+    const entry = yarnTree[packageName]
+    Object.keys(entry).forEach(version => {
+      const { semvers } = entry[version]
+      semvers.forEach(sver => {
+        formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
+          semvers: undefined,
+          version
+        })
+      })
+    })
+    return formatted
+  }, {})
+}
+
 module.exports = {
   yarnToNpm (packageDir) {
     // TODO: error checking
@@ -150,11 +195,12 @@ module.exports = {
   },
   npmToYarn (packageDir) {
     // TODO: error checking
-    const packageLockFileString = fs.readFileSync(path.join(packageDir, 'package-lock.json'))
+    const packageLockFileString = fs.readFileSync(path.join(packageDir, 'package-lock.json'), 'utf-8')
     const packageLock = JSON.parse(packageLockFileString)
     const { dependencies } = packageLock
-    const objectWithSemver = buildYarnTree({dependencies, packageDir})
-    const object = formatSemverStrings(objectWithSemver)
-    return lockfile.stringify(object)
+    const nodeModulesTree = nmTree(packageDir)
+    const yarnTree = buildYarnTree(nodeModulesTree, packageLock)
+    const formattedYarnObject = formatYarnTree(yarnTree)
+    return lockfile.stringify(formattedYarnObject)
   }
 }
