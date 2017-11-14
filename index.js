@@ -103,7 +103,11 @@ function flattenPackageLock (deps, flattenedTree) {
   flattenedTree = flattenedTree || {}
   return Object.keys(deps).reduce((flattenedTree, depName) => {
     const { version, dependencies } = deps[depName]
-    flattenedTree[`${depName}@${version}`] = deps[depName]
+    if (!deps[depName].bundled) {
+      const resolved = deps[depName].resolved || version
+      // https://docs.npmjs.com/files/package-lock.json#version-1
+      flattenedTree[`${depName}@${version}`] = Object.assign({}, deps[depName], {resolved})
+    }
     if (dependencies) flattenPackageLock(dependencies, flattenedTree)
     return flattenedTree
   }, flattenedTree)
@@ -112,10 +116,13 @@ function flattenPackageLock (deps, flattenedTree) {
 function buildYarnTree (nodeModulesTree, packageLock) {
   const flattenedPackageLock = flattenPackageLock(packageLock.dependencies)
   return Object.keys(nodeModulesTree).reduce((tree, path) => {
-    const { name, version, dependencies, optionalDependencies } = nodeModulesTree[path]
+    const { name, version, dependencies, optionalDependencies, devDependencies, _resolved } = nodeModulesTree[path]
     if (name !== packageLock.name) {
-      const { resolved, integrity } = flattenedPackageLock[`${name}@${version}`]
-      const yarnStyleResolved = npmToYarnResolved(resolved, integrity)
+      if (!flattenedPackageLock[`${name}@${version}`]) {
+        return tree // TODO: fix this, this mostly has to do with bundled dependencies
+      }
+      const { resolved, integrity } = flattenedPackageLock[`${name}@${version}`] || flattenedPackageLock[`${name}@${_resolved}`]
+      const yarnStyleResolved = npmToYarnResolved(resolved || version, integrity)
       if (optionalDependencies) {
         Object.keys(optionalDependencies).forEach(optDepName => {
           delete dependencies[optDepName]
@@ -133,7 +140,7 @@ function buildYarnTree (nodeModulesTree, packageLock) {
       })
     }
     if (dependencies || optionalDependencies) {
-      const combinedDeps = Object.assign({}, dependencies, optionalDependencies)
+      const combinedDeps = Object.assign({}, dependencies, optionalDependencies, name === packageLock.name ? devDependencies : {})
       Object.keys(combinedDeps).forEach(dep => {
         const depSemver = combinedDeps[dep]
         try {
@@ -149,7 +156,7 @@ function buildYarnTree (nodeModulesTree, packageLock) {
             )
           })
         } catch (e) {
-          // non-existent package, likely due to platform mismatch (eg. fsevents
+          // non-existent package, likely due to platform mismatch (eg. fsevents)
           // TODO: fix this!
           return tree
         }
@@ -159,17 +166,31 @@ function buildYarnTree (nodeModulesTree, packageLock) {
   }, {})
 }
 
+function extractVersion (url, packageName) {
+  // TODO: error checking
+  const re = new RegExp(`${packageName}\/-\/${packageName}-(.+?)\.tgz$`)
+  const matches = url.match(re)
+  if (matches && matches[1]) return matches[1]
+  return url
+}
+
 function formatYarnTree (yarnTree) {
   return Object.keys(yarnTree).reduce((formatted, packageName) => {
     const entry = yarnTree[packageName]
     Object.keys(entry).forEach(version => {
       const { semvers } = entry[version]
-      semvers.forEach(sver => {
-        formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
-          semvers: undefined,
-          version
-        })
-      })
+      if (semvers) { // TODO: fix this (likely due to bundled issue)
+        const nonUrlVersion = extractVersion(version, packageName)
+        if (entry[version].resolved) {
+          semvers.forEach(sver => {
+            formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
+              semvers: undefined,
+              version: nonUrlVersion,
+              resolved: entry[version].resolved || version
+            })
+          })
+        }
+      }
     })
     return formatted
   }, {})
