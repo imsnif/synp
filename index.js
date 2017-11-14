@@ -4,8 +4,6 @@ const lockfile = require('@yarnpkg/lockfile')
 const crypto = require('crypto')
 const nmTree = require('./lib/nmtree')
 
-const util = require('util')
-
 function buildSemverDict (object) {
   return Object.keys(object).reduce((memo, packageNameAndVersion) => {
     const packageData = object[packageNameAndVersion]
