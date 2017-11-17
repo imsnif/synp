@@ -140,3 +140,63 @@ test('translate yarn.lock to package-lock with scopes', async t => {
     t.end()
   }
 })
+
+test('error => no source file', async t => {
+  t.plan(2)
+  try {
+    const path = `${__dirname}/fixtures/foo`
+    t.throws(
+      () => npmToYarn(path),
+      /no such file or directory/,
+      'proper error thrown from npmToYarn for non-existent path'
+    )
+    t.throws(
+      () => yarnToNpm(path),
+      /no such file or directory/,
+      'proper error thrown from yarnToNpm for non-existent path'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('error => no package.json', async t => {
+  t.plan(2)
+  try {
+    const path = `${__dirname}/fixtures/no-package-json`
+    t.throws(
+      () => npmToYarn(path),
+      /no such file or directory/,
+      'proper error thrown from npmToYarn for non-existent path'
+    )
+    t.throws(
+      () => yarnToNpm(path),
+      /no such file or directory/,
+      'proper error thrown from yarnToNpm for non-existent path'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('error => no package.json', async t => {
+  t.plan(2)
+  try {
+    const path = `${__dirname}/fixtures/no-source-files`
+    t.throws(
+      () => npmToYarn(path),
+      /no such file or directory/,
+      'proper error thrown from npmToYarn for non-existent path'
+    )
+    t.throws(
+      () => yarnToNpm(path),
+      /no such file or directory/,
+      'proper error thrown from yarnToNpm for non-existent path'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
