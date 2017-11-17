@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@yarnpkg/lockfile": "^1.0.0",
+    "nmtree": "^1.0.3",
     "tap-spec": "^4.1.1"
   },
   "devDependencies": {

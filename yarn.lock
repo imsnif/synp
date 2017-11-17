@@ -35,6 +35,10 @@ chalk@^1.0.0:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
+commander@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
@@ -188,6 +192,12 @@ minimatch@^3.0.4:
 minimist@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+
+nmtree@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/nmtree/-/nmtree-1.0.3.tgz#75b605a99727f136e82c19df49c319e212bda555"
+  dependencies:
+    commander "^2.11.0"
 
 number-is-nan@^1.0.0:
   version "1.0.1"
