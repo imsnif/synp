@@ -9,7 +9,10 @@ const { buildNpmTree } = require('./lib/package-lock-tools')
 
 module.exports = {
   yarnToNpm (packageDir) {
-    const yarnLock = fs.readFileSync(path.join(packageDir, 'yarn.lock'), 'utf-8')
+    const yarnLock = fs.readFileSync(
+      path.join(packageDir, 'yarn.lock'),
+      'utf-8'
+    )
     const yarnObject = lockfile.parse(yarnLock).object
     const nodeModulesTree = nmtree(packageDir)
     const dependencies = buildNpmTree(nodeModulesTree, yarnObject)
@@ -24,7 +27,10 @@ module.exports = {
     })
   },
   npmToYarn (packageDir) {
-    const packageLockFileString = fs.readFileSync(path.join(packageDir, 'package-lock.json'), 'utf-8')
+    const packageLockFileString = fs.readFileSync(
+      path.join(packageDir, 'package-lock.json'),
+      'utf-8'
+    )
     const packageLock = JSON.parse(packageLockFileString)
     const nodeModulesTree = nmtree(packageDir)
     const yarnTree = buildYarnTree(nodeModulesTree, packageLock)
