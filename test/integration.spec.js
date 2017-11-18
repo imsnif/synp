@@ -141,6 +141,49 @@ test('translate yarn.lock to package-lock with scopes', async t => {
   }
 })
 
+test('translate package-lock to yarn.lock with bundled dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/bundled-deps-npm`
+    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const res = npmToYarn(path)
+    t.deepEquals(lockfile.parse(res), lockfile.parse(yarnLock), 'result is equal to yarn.lock snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with bundled dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/bundled-deps-yarn`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+    const resParsed = JSON.parse(res)
+    const pLockParsed = JSON.parse(packageLock)
+    t.deepEquals(JSON.parse(res), JSON.parse(packageLock), 'result is equal to yarn.lock snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate corrupted package-lock to yarn.lock', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/single-dep-corrupted-version`
+    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const res = npmToYarn(path)
+    const resParsed = lockfile.parse(res)
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    t.deepEquals(resParsed, yarnLockParsed, 'result is equal to yarn.lock snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('error => no source file', async t => {
   t.plan(2)
   try {
@@ -181,7 +224,7 @@ test('error => no package.json', async t => {
   }
 })
 
-test('error => no package.json', async t => {
+test('error => no source files', async t => {
   t.plan(2)
   try {
     const path = `${__dirname}/fixtures/no-source-files`
