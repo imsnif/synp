@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "tape ./test/*.spec.js | tap-spec",
-    "coverage": "nyc --reporter=lcov npm test"
+    "coverage": "nyc --reporter=lcov npm test",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
@@ -15,6 +16,7 @@
     "tap-spec": "^4.1.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "nyc": "^11.3.0",
     "tape": "^4.8.0"
   }
