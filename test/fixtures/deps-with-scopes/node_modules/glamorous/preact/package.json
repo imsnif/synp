@@ -1,0 +1,5 @@
+{
+  "main": "dist/glamorous.cjs.js",
+  "jsnext:main": "dist/glamorous.esm.js",
+  "module": "dist/glamorous.esm.js"
+}
