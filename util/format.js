@@ -62,6 +62,11 @@ module.exports = {
         const { semvers } = entry[version]
         const nonUrlVersion = extractVersion(version, packageName)
         semvers.forEach(sver => {
+          if (!entry[version].resolved && !/^http/.test(version)) {
+            return
+            // we cannot guess about this dependency - it is likely bundled
+            // might consider adding a warning
+          }
           formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
             semvers: undefined,
             version: nonUrlVersion,
