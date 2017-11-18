@@ -4,8 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const lockfile = require('@yarnpkg/lockfile')
 const nmtree = require('nmtree')
-const { buildYarnTree, formatYarnTree } = require('./lib/yarn-tools')
-const { buildNpmTree } = require('./lib/package-lock-tools')
+const { buildYarnTree, buildNpmTree } = require('./lib/tree')
 
 module.exports = {
   yarnToNpm (packageDir) {
@@ -34,7 +33,6 @@ module.exports = {
     const packageLock = JSON.parse(packageLockFileString)
     const nodeModulesTree = nmtree(packageDir)
     const yarnTree = buildYarnTree(nodeModulesTree, packageLock)
-    const formattedYarnObject = formatYarnTree(yarnTree)
-    return lockfile.stringify(formattedYarnObject)
+    return lockfile.stringify(yarnTree)
   }
 }
