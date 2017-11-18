@@ -21,9 +21,6 @@ function findDepVersion (dep, nodeModulesTree, parentPath) {
     return version
   } else {
     const oneLevelDown = parentPackagePath(parentPath)
-    if (oneLevelDown === '/') {
-      throw new Error(`Could not find package ${dep}`)
-    }
     return findDepVersion(dep, nodeModulesTree, oneLevelDown)
   }
 }
