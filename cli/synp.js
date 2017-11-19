@@ -50,7 +50,7 @@ function validatePath (program) {
     program.outputHelp()
     process.exit(2)
   }
-  if (!nodeModulesPath || !nodeModulesStats.isDirectory()) {
+  if (!nodeModulesStats || !nodeModulesStats.isDirectory()) {
     console.error(
       colors.red(`node_modules directory does not exist in path ${sourcePath}`)
     )
