@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/imsnif/synp.svg?branch=master)](https://travis-ci.org/imsnif/synp) [![Coverage Status](https://coveralls.io/repos/github/imsnif/synp/badge.svg?branch=master)](https://coveralls.io/github/imsnif/synp?branch=master) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 # synp
 Convert `yarn.lock` to `package-lock.json` and vice versa.
 
