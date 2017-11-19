@@ -6,13 +6,13 @@ Convert `yarn.lock` to `package-lock.json` and vice versa.
 
 ### command line usage
 ```bash
-yarn # be sure the relevant node_modules folder exists and is updated
+yarn # be sure the node_modules folder dir and is updated
 synp --source-file /path/to/yarn.lock
 # will create /path/to/package-lock.json
 ```
 
 ```bash
-npm install # be sure the relevant node_modules folder exists and is updated                                                                                                                                                                   
+npm install # be sure the node_modules dir exists and is updated                                                                                                                                                                   
 synp --source-file /path/to/package-lock.json
 # will create /path/to/yarn.lock
 ```
