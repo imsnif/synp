@@ -7,12 +7,14 @@ Convert `yarn.lock` to `package-lock.json` and vice versa.
 `npm install -g synp`
 
 ### command line usage
+#### yarn.lock => package-lock.json
 ```bash
 yarn # be sure the node_modules folder dir and is updated
 synp --source-file /path/to/yarn.lock
 # will create /path/to/package-lock.json
 ```
 
+#### package-lock.json => yarn.lock
 ```bash
 npm install # be sure the node_modules dir exists and is updated
 synp --source-file /path/to/package-lock.json
