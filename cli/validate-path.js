@@ -13,24 +13,12 @@ module.exports = function validatePath (program) {
   const nodeModulesStats = fs.existsSync(nodeModulesPath) && fs.statSync(nodeModulesPath)
   const sourceStats = fs.existsSync(sourceFile) && fs.statSync(sourceFile)
   if (!sourceStats || !sourceStats.isFile()) {
-    console.error(
-      colors.red(`source-file ${sourceFile} does not exist`)
-    )
-    program.outputHelp()
-    process.exit(2)
+    throw new Error(`source-file ${sourceFile} does not exist`)
   }
   if (fs.existsSync(destFile)) {
-    console.error(
-      colors.red(`destination file ${destFile} already exists, will not overwrite`)
-    )
-    program.outputHelp()
-    process.exit(2)
+    throw new Error(`destination file ${destFile} already exists, will not overwrite`)
   }
   if (!nodeModulesStats || !nodeModulesStats.isDirectory()) {
-    console.error(
-      colors.red(`node_modules directory does not exist in path ${sourcePath}`)
-    )
-    program.outputHelp()
-    process.exit(2)
+    throw new Error(`node_modules directory does not exist in path ${sourcePath}`)
   }
 }
