@@ -7,7 +7,7 @@ function parentPackagePath (parentPath) {
   const pathDirs = dirs.slice(0, dirs.length - 1)
   if (pathDirs[pathDirs.length - 1] === 'node_modules') {
     return parentPackagePath(pathDirs.join(path.sep))
-  } else if (pathDirs.join(path.sep) === '/' || pathDirs.join(path.sep) === '') {
+  } else if (pathDirs.join(path.sep) === parentPath) {
     throw new Error('Could not find parent dir!')
   } else {
     return pathDirs.join(path.sep)
