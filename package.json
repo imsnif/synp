@@ -1,7 +1,16 @@
 {
   "name": "synp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Convert yarn.lock to package-lock.json and vice versa",
+  "keywords": [
+    "yarn",
+    "package-lock",
+    "package-lock.json",
+    "yarn.lock",
+    "convert",
+    "transform",
+    "translate"
+  ],
   "main": "index.js",
   "bin": {
     "synp": "./cli/synp.js"
