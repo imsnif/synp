@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "synp": "./cli/synp.js"
+  },
   "scripts": {
     "test": "tape ./test/*.spec.js | tap-spec",
     "coverage": "nyc --reporter=lcov npm test",
