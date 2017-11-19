@@ -2,17 +2,19 @@
 Convert `yarn.lock` to `package-lock.json` and vice versa.
 
 ### install
-`npm install -g synp` - for the cli tool
-`npm install synp` / `yarn add synp` for the `require`-able library
+`npm install -g synp`
 
 ### command line usage
 ```bash
 yarn # be sure the relevant node_modules folder exists and is updated
-synp --source-file /path/to/yarn.lock # will create /path/to/package-lock.json
+synp --source-file /path/to/yarn.lock
+# will create /path/to/package-lock.json
 ```
+
 ```bash
 npm install # be sure the relevant node_modules folder exists and is updated                                                                                                                                                                   
-synp --source-file /path/to/package-lock.json # will create /path/to/yarn.lock
+synp --source-file /path/to/package-lock.json
+# will create /path/to/yarn.lock
 ```
 
 ### programmatic usage
