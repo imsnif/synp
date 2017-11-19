@@ -12,7 +12,7 @@ synp --source-file /path/to/yarn.lock
 ```
 
 ```bash
-npm install # be sure the node_modules dir exists and is updated                                                                                                                                                                   
+npm install # be sure the node_modules dir exists and is updated                                                                                                                                                               
 synp --source-file /path/to/package-lock.json
 # will create /path/to/yarn.lock
 ```
