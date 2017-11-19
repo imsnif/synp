@@ -14,12 +14,30 @@ test('cli tool converts yarn.lock to package-lock.json', async t => {
     const yarnPath = '/foo/bar/baz/yarn.lock'
     const pLockPath = '/foo/bar/baz/package-lock.json'
     const mockedProgram = mockProgram(yarnPath)
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: false, yarnExists: true})
+    mocks({
+      sandbox,
+      packagePath,
+      yarnPath,
+      pLockPath,
+      pLockExists: false,
+      yarnExists: true
+    })
     const run = require('../cli/run')
     run(mockedProgram)
-    t.ok(synp.yarnToNpm.calledWith(packagePath), 'proper converter called with proper path')
-    t.equals(fs.writeFileSync.args[0][0], `${packagePath}/package-lock.json`, 'result written to proper file')
-    t.deepEquals(JSON.parse(fs.writeFileSync.args[0][1]), {mockedResult: 'mockedResult'}, 'proper result written to destination file')
+    t.ok(
+      synp.yarnToNpm.calledWith(packagePath),
+      'proper converter called with proper path'
+    )
+    t.equals(
+      fs.writeFileSync.args[0][0],
+      `${packagePath}/package-lock.json`,
+      'result written to proper file'
+    )
+    t.deepEquals(
+      JSON.parse(fs.writeFileSync.args[0][1]),
+      {mockedResult: 'mockedResult'},
+      'proper result written to destination file'
+    )
     t.ok(process.exit.calledOnce, 'program exited')
     sandbox.restore()
   } catch (e) {
@@ -37,12 +55,30 @@ test('cli tool converts package-lock.json to yarn.lock', async t => {
     const yarnPath = '/foo/bar/baz/yarn.lock'
     const pLockPath = '/foo/bar/baz/package-lock.json'
     const mockedProgram = mockProgram(pLockPath)
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: true, yarnExists: false})
+    mocks({
+      sandbox,
+      packagePath,
+      yarnPath,
+      pLockPath,
+      pLockExists: true,
+      yarnExists: false
+    })
     const run = require('../cli/run')
     run(mockedProgram)
-    t.ok(synp.npmToYarn.calledWith(packagePath), 'proper converter called with proper path')
-    t.equals(fs.writeFileSync.args[0][0], `${packagePath}/yarn.lock`, 'result written to proper file')
-    t.deepEquals(fs.writeFileSync.args[0][1], '{"mockedResult": "mockedResult"}', 'proper result written to destination file')
+    t.ok(
+      synp.npmToYarn.calledWith(packagePath),
+      'proper converter called with proper path'
+    )
+    t.equals(
+      fs.writeFileSync.args[0][0],
+      `${packagePath}/yarn.lock`,
+      'result written to proper file'
+    )
+    t.deepEquals(
+      fs.writeFileSync.args[0][1],
+      '{"mockedResult": "mockedResult"}',
+      'proper result written to destination file'
+    )
     t.ok(process.exit.calledOnce, 'program exited')
     sandbox.restore()
   } catch (e) {
@@ -60,7 +96,14 @@ test('cli prints help and exits with no source file', async t => {
     const yarnPath = '/foo/bar/baz/yarn.lock'
     const pLockPath = '/foo/bar/baz/package-lock.json'
     const mockedProgram = mockProgram()
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: false, yarnExists: true})
+    mocks({
+      sandbox,
+      packagePath,
+      yarnPath,
+      pLockPath,
+      pLockExists: false,
+      yarnExists: true
+    })
     const run = require('../cli/run')
     run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
@@ -84,7 +127,14 @@ test('cli prints help and exits with bad source file', async t => {
     const yarnPath = '/foo/bar/baz/yarn.lock'
     const pLockPath = '/foo/bar/baz/package-lock.json'
     const mockedProgram = mockProgram('foo')
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: false, yarnExists: true})
+    mocks({
+      sandbox,
+      packagePath,
+      yarnPath,
+      pLockPath,
+      pLockExists: false,
+      yarnExists: true
+    })
     const run = require('../cli/run')
     run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
@@ -108,7 +158,15 @@ test('cli prints help and exits when source file does not exist', async t => {
     const yarnPath = '/foo/bar/baz/yarn.lock'
     const pLockPath = '/foo/bar/baz/package-lock.json'
     const mockedProgram = mockProgram(yarnPath)
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: false, yarnExists: true, yarnIsDir: true})
+    mocks({
+      sandbox,
+      packagePath,
+      yarnPath,
+      pLockPath,
+      pLockExists: false,
+      yarnExists: true,
+      yarnIsDir: true
+    })
     const run = require('../cli/run')
     run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
