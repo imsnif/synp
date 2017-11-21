@@ -22,6 +22,10 @@
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imsnif/synp.git"
+  },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.0.0",
     "colors": "^1.1.2",
