@@ -197,6 +197,23 @@ test('translate yarn.lock to package-lock with bundled dependencies', async t =>
   }
 })
 
+test('translate yarn.lock to package-lock with github dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/github-dep-yarn`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(res),
+      JSON.parse(packageLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate corrupted package-lock to yarn.lock', async t => {
   try {
     t.plan(1)
