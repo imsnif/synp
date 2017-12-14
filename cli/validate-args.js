@@ -1,7 +1,5 @@
 'use strict'
 
-const colors = require('colors')
-
 module.exports = function validateArgs (program, sourceFileName) {
   const { sourceFile } = program
   if (!sourceFile) {

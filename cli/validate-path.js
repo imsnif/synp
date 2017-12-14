@@ -1,7 +1,6 @@
 'use strict'
 const fs = require('fs')
 const path = require('path')
-const colors = require('colors')
 
 module.exports = function validatePath (program) {
   const { sourceFile } = program
