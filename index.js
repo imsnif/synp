@@ -13,7 +13,7 @@ module.exports = {
       path.join(packageDir, 'yarn.lock'),
       'utf-8'
     )
-    const yarnLockNormalized = eol.auto(yarnLock)
+    const yarnLockNormalized = eol.lf(yarnLock)
     const yarnObject = lockfile.parse(yarnLockNormalized).object
     const nodeModulesTree = nmtree(packageDir)
     const dependencies = buildNpmTree(nodeModulesTree, yarnObject)
