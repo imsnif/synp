@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const lockfile = require('@yarnpkg/lockfile')
+const eol = require('eol')
 const nmtree = require('nmtree')
 const { buildYarnTree, buildNpmTree } = require('./lib/tree')
 
@@ -12,7 +13,8 @@ module.exports = {
       path.join(packageDir, 'yarn.lock'),
       'utf-8'
     )
-    const yarnObject = lockfile.parse(yarnLock).object
+    const yarnLockNormalized = eol.auto(yarnLock)
+    const yarnObject = lockfile.parse(yarnLockNormalized).object
     const nodeModulesTree = nmtree(packageDir)
     const dependencies = buildNpmTree(nodeModulesTree, yarnObject)
     const packageJson = fs.readFileSync(path.join(packageDir, 'package.json'))
