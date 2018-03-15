@@ -22,7 +22,7 @@ test('translate with one root dependency', async t => {
       'can convert yarn to npm'
     )
     t.deepEquals(
-      lockfile.parse(npmToYarn(path)),
+      lockfile.parse(await npmToYarn(path)),
       lockfile.parse(yarnLock),
       'can convert npm to yarn'
     )
@@ -38,8 +38,9 @@ test('translate package-lock to yarn.lock with multiple-level dependencies', asy
     const path = `${__dirname}/fixtures/multiple-level-deps`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const yarnFile = await npmToYarn(path)
     const res = lockfile.parse(
-      npmToYarn(path).replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
+      yarnFile.replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
     )
     const yarnLockWithNpmRegistry = yarnLock.replace(
       /registry.yarnpkg.com/g,
@@ -103,7 +104,8 @@ test('translate package-lock to yarn.lock with scopes', async t => {
     const path = `${__dirname}/fixtures/deps-with-scopes`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
-    const res = lockfile.parse(npmToYarn(path).replace(
+    const convertedYarnLock = await npmToYarn(path)
+    const res = lockfile.parse(convertedYarnLock.replace(
       /registry.yarnpkg.com/g,
       'registry.npmjs.org'
     ))
@@ -165,7 +167,7 @@ test('translate package-lock to yarn.lock with bundled dependencies', async t =>
     t.plan(1)
     const path = `${__dirname}/fixtures/bundled-deps-npm`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
-    const res = npmToYarn(path)
+    const res = await npmToYarn(path)
     t.deepEquals(
       lockfile.parse(res),
       lockfile.parse(yarnLock),
@@ -214,6 +216,23 @@ test('translate yarn.lock to package-lock with github dependencies', async t => 
   }
 })
 
+test('translate package-lock to yarn.lock with github dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/github-dep-npm`
+    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const res = await npmToYarn(path)
+    t.deepEquals(
+      lockfile.parse(res),
+      lockfile.parse(yarnLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate yarn.lock to package-lock with crlf line ending', async t => {
   try {
     t.plan(1)
@@ -231,19 +250,21 @@ test('translate yarn.lock to package-lock with crlf line ending', async t => {
   }
 })
 
-test('translate corrupted package-lock to yarn.lock', async t => {
+test('error => corrupted package-lock to yarn.lock', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/single-dep-corrupted-version`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
-    const res = npmToYarn(path)
-    const resParsed = lockfile.parse(res)
-    const yarnLockParsed = lockfile.parse(yarnLock)
-    t.deepEquals(
-      resParsed,
-      yarnLockParsed,
-      'result is equal to yarn.lock snapshot'
-    )
+    try {
+      await npmToYarn(path),
+      t.fail('did not throw')
+    } catch (e) {
+      t.equals(
+        e.message,
+        '404 Not Found: fake-dep@https://registry.npmjs.org/fake-dep/-/fake-dep-2.1.14.tgz',
+        'proper error message'
+      )
+    }
   } catch (e) {
     t.fail(e.stack)
     t.end()
@@ -254,16 +275,24 @@ test('error => no source file', async t => {
   t.plan(2)
   try {
     const path = `${__dirname}/fixtures/foo`
-    t.throws(
-      () => npmToYarn(path),
-      /no such file or directory/,
-      'proper error thrown from npmToYarn for non-existent path'
-    )
-    t.throws(
-      () => yarnToNpm(path),
-      /no such file or directory/,
-      'proper error thrown from yarnToNpm for non-existent path'
-    )
+    try {
+      await npmToYarn(path),
+      t.fail('did not throw error when converting to yarn')
+    } catch (e) {
+      t.ok(
+        e.message.includes('no such file or directory'),
+        'proper error thrown when converting to yarn'
+      )
+    }
+    try {
+      await yarnToNpm(path),
+      t.fail('did not throw error when converting to npm')
+    } catch (e) {
+      t.ok(
+        e.message.includes('no such file or directory'),
+        'proper error thrown when converting to npm'
+      )
+    }
   } catch (e) {
     t.fail(e.stack)
     t.end()
@@ -274,36 +303,24 @@ test('error => no package.json', async t => {
   t.plan(2)
   try {
     const path = `${__dirname}/fixtures/no-package-json`
-    t.throws(
-      () => npmToYarn(path),
-      /no such file or directory/,
-      'proper error thrown from npmToYarn for non-existent path'
-    )
-    t.throws(
-      () => yarnToNpm(path),
-      /no such file or directory/,
-      'proper error thrown from yarnToNpm for non-existent path'
-    )
-  } catch (e) {
-    t.fail(e.stack)
-    t.end()
-  }
-})
-
-test('error => no source files', async t => {
-  t.plan(2)
-  try {
-    const path = `${__dirname}/fixtures/no-source-files`
-    t.throws(
-      () => npmToYarn(path),
-      /no such file or directory/,
-      'proper error thrown from npmToYarn for non-existent path'
-    )
-    t.throws(
-      () => yarnToNpm(path),
-      /no such file or directory/,
-      'proper error thrown from yarnToNpm for non-existent path'
-    )
+    try {
+      await npmToYarn(path),
+      t.fail('did not throw error when converting to yarn')
+    } catch (e) {
+      t.ok(
+        e.message.includes('no such file or directory'),
+        'proper error thrown from npmToYarn for non-existent path'
+      )
+    }
+    try {
+      await npmToYarn(path),
+      t.fail('did not throw error when converting to yarn')
+    } catch (e) {
+      t.ok(
+        e.message.includes('no such file or directory'),
+        'proper error thrown from yarnToNpm for non-existent path'
+      )
+    }
   } catch (e) {
     t.fail(e.stack)
     t.end()
