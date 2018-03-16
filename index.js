@@ -103,26 +103,139 @@ async function normalizeResolved(node, manifest) {
   )
 }
 
-async function mixSemversIn (nodeModulesTree, packageJson, getRemoteManifest, bar) {
+async function mixSemversIn (nodeModulesTree, packageJson, getRemoteManifest, bar, yarnTree) {
   await nodeModulesTree.forEachAsync(async (node, cb) => {
-    const manifest = await getManifest(node, packageJson, getRemoteManifest)
-    node.dependencies = updateDependenciesWithSemver(node, manifest, packageJson)
-    node.version = normalizeVersion(node, manifest)
-    node.resolved = await normalizeResolved(node, manifest)
+    await yarnTree.addEntry(node)
     bar.increment()
     await cb()
   })
 }
 
-function formatYarnDependencies (dependencies) {
-  return Array.from(dependencies.entries())
-  .reduce(({ yarnDeps, yarnOptionalDeps }, [ nameAndSemver, depVal ]) => {
-    const name = nameAndSemver.replace(/@[^@]*$/g, '')
-    const semverString = nameAndSemver.replace(/^.*@/g, '')
-    if (depVal.optional) {
-      yarnOptionalDeps[name] = semverString
+function yarnEntry () {
+  let semvers = []
+  let node = {}
+  let state = {}
+  let name = null
+  function _isPopulated (key) {
+    return state[key] && Object.keys(state[key]).length > 0
+  }
+  return Object.freeze({
+    set node (val) {
+      node = val
+    },
+    get node () {
+      return (node && Object.keys(node) > 0 ? node : null)
+    },
+    set name (val) {
+      name = val
+    },
+    get name () {
+      return name
+    },
+    get version () {
+      return state.version
+    },
+    set version (val) {
+      state.version = val
+    },
+    set dependencies (val) {
+      const { yarnDeps, yarnOptionalDeps } = formatYarnDependencies(val, node.dependencies)
+      state.dependencies = yarnDeps
+      state.optionalDependencies = yarnOptionalDeps
+    },
+    get dependencies () {
+      return state.dependencies
+    },
+    get resolved () {
+      return state.resolved
+    },
+    set resolved (val) {
+      state.resolved = val
+    },
+    get semvers () {
+      return semvers
+    },
+    toObject () {
+      return Object.assign({}, state, {
+        dependencies: _isPopulated('dependencies')
+          ? state.dependencies
+          : null,
+        optionalDependencies: _isPopulated('optionalDependencies')
+          ? state.optionalDependencies
+          : null
+      })
+    }
+  })
+}
+
+function yarnTree (nodeModulesTree, packageJson, getRemoteManifest) {
+  let entries = new Map()
+  return Object.freeze({
+    async addEntry (node) {
+      const manifest = await getManifest(node, packageJson, getRemoteManifest)
+      Object.keys(manifest.dependencies).forEach(depName => {
+        if (!node.dependencies.get(depName)) return
+        // eg. fsevents TODO: fix for platform specific dependencies
+        const key = md5(depName + node.dependencies.get(depName).version)
+        const semverString = manifest.dependencies[depName]
+        const entry = entries.get(key) || yarnEntry()
+        entry.semvers.push(semverString)
+        entries.set(key, entry)
+      })
+      if (!node.address) return // root node
+      const key = md5(node.name + node.version)
+      const entry = entries.get(key) || yarnEntry()
+      entry.node = entry.node || node
+      entries.set(key, entry)
+      entry.name = node.name
+      entry.version = normalizeVersion(node, manifest)
+      entry.dependencies = manifest.dependencies
+      entry.resolved = await normalizeResolved(node, manifest)
+    },
+    entries () {
+      return entries
+    },
+    toObject () {
+      return Array.from(entries.entries()).reduce((obj, [key, val]) => {
+        const name = val.name
+        const semverStrings = val.semvers
+        semverStrings.forEach(s => {
+          obj[`${name}@${s}`] = val.toObject()
+        })
+        return obj
+      }, {})
+    }
+  })
+}
+
+function buildLogicalTree (packageDir) {
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.join(packageDir, 'package.json'), 'utf-8')
+  )
+  const packageLock = JSON.parse(
+    fs.readFileSync(
+      path.join(packageDir, 'package-lock.json'),
+      'utf-8'
+    )
+  )
+  const nodeModulesTree = logicalTree(
+    packageJson,
+    packageLock
+  )
+  return { packageJson, packageLock, nodeModulesTree }
+}
+
+function formatYarnDependencies (manifestDependencies, nodeDependencies) {
+  return Object.keys(manifestDependencies)
+  .reduce(({yarnDeps, yarnOptionalDeps}, depName) => {
+    const depLogicalEntry = nodeDependencies.get(depName)
+    const depSemver = manifestDependencies[depName]
+    if (!depLogicalEntry) return {yarnDeps, yarnOptionalDeps}
+    // eg. fsevents TODO: fix for platform specific dependencies
+    if (depLogicalEntry.optional === true) {
+      yarnOptionalDeps[depName] = depSemver
     } else {
-      yarnDeps[name] = semverString
+      yarnDeps[depName] = depSemver
     }
     return {yarnDeps, yarnOptionalDeps}
   }, {yarnDeps: {}, yarnOptionalDeps: {}})
@@ -149,44 +262,19 @@ module.exports = {
     })
   },
   async npmToYarn (packageDir) {
-    const packageJson = JSON.parse(
-      fs.readFileSync(path.join(packageDir, 'package.json'), 'utf-8')
-    )
-    const packageLock = JSON.parse(
-      fs.readFileSync(
-        path.join(packageDir, 'package-lock.json'),
-        'utf-8'
-      )
-    )
-    const nodeModulesTree = logicalTree(
-      packageJson,
-      packageLock
-    )
+    const { packageJson, nodeModulesTree } = buildLogicalTree(packageDir)
     const bar = createProgressBar(nodeModulesTree)
     const getRemoteManifest = remoteManifestQueue()
     try {
-      let yarnTree = {}
-      // [ nodeName ]: { .. } ===> [ nodeName@semverString ]: { .. }
-      // node.version = [ semverString ] || [ packageUrl ] // TODO: ??
-      // node.resolved = [ url#hash ]
-      await mixSemversIn(nodeModulesTree, packageJson, getRemoteManifest, bar)
-      nodeModulesTree.forEach((node, cb) => {
-        const { dependencies } = node
-        dependencies.forEach((dep, depName) => {
-          const { version, resolved, dependencies } = dep
-          const { yarnDeps, yarnOptionalDeps } = formatYarnDependencies(dependencies)
-          const depsForEntry = Object.keys(yarnDeps).length > 0 ? yarnDeps : null
-          const optDepsForEntry = Object.keys(yarnOptionalDeps).length > 0 ? yarnOptionalDeps : null
-          yarnTree[depName] = {
-            version, resolved,
-            dependencies: depsForEntry,
-            optionalDependencies: optDepsForEntry
-          }
-        })
-        cb()
+      let tree = yarnTree(nodeModulesTree, packageJson, getRemoteManifest)
+      await nodeModulesTree.forEachAsync(async (node, cb) => {
+        await tree.addEntry(node)
+        bar.increment()
+        await cb()
       })
+      const yarnObj = tree.toObject()
       bar.stop()
-      return lockfile.stringify(yarnTree)
+      return lockfile.stringify(yarnObj)
     } catch (e) {
       bar.stop()
       throw e
