@@ -171,7 +171,7 @@ test('translate package-lock to yarn.lock with bundled dependencies', async t =>
     t.deepEquals(
       lockfile.parse(res),
       lockfile.parse(yarnLock),
-      'result is equal to yarn.lock snapshot'
+      'result is equal to yarn.lock snapshot (bundled dependencies ignored)'
     )
   } catch (e) {
     t.fail(e.stack)
@@ -254,9 +254,8 @@ test('error => corrupted package-lock to yarn.lock', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/single-dep-corrupted-version`
-    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     try {
-      await npmToYarn(path),
+      await npmToYarn(path)
       t.fail('did not throw')
     } catch (e) {
       t.equals(
@@ -276,7 +275,7 @@ test('error => no source file', async t => {
   try {
     const path = `${__dirname}/fixtures/foo`
     try {
-      await npmToYarn(path),
+      await npmToYarn(path)
       t.fail('did not throw error when converting to yarn')
     } catch (e) {
       t.ok(
@@ -285,7 +284,7 @@ test('error => no source file', async t => {
       )
     }
     try {
-      await yarnToNpm(path),
+      await yarnToNpm(path)
       t.fail('did not throw error when converting to npm')
     } catch (e) {
       t.ok(
@@ -304,7 +303,7 @@ test('error => no package.json', async t => {
   try {
     const path = `${__dirname}/fixtures/no-package-json`
     try {
-      await npmToYarn(path),
+      await npmToYarn(path)
       t.fail('did not throw error when converting to yarn')
     } catch (e) {
       t.ok(
@@ -313,7 +312,7 @@ test('error => no package.json', async t => {
       )
     }
     try {
-      await npmToYarn(path),
+      await npmToYarn(path)
       t.fail('did not throw error when converting to yarn')
     } catch (e) {
       t.ok(
