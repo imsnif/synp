@@ -6,7 +6,6 @@ const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
 const {
   findNonSha1Hashes,
-  replaceNonSha1,
   normalizePackageLock
 } = require('./test-utils')
 
@@ -37,7 +36,6 @@ test('translate package-lock to yarn.lock with multiple-level dependencies', asy
     t.plan(1)
     const path = `${__dirname}/fixtures/multiple-level-deps`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
-    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const yarnFile = await npmToYarn(path)
     const res = lockfile.parse(
       yarnFile.replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
@@ -47,16 +45,9 @@ test('translate package-lock to yarn.lock with multiple-level dependencies', asy
       'registry.npmjs.org'
     )
     const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
-    const { dependencies } = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
-    const yarnLockObjReplaced = replaceNonSha1(
-      yarnLockObject,
-      resolvedWithNonSha1Hashes
-    )
-    const resReplaced = replaceNonSha1(res, resolvedWithNonSha1Hashes)
     t.deepEquals(
-      resReplaced,
-      yarnLockObjReplaced,
+      res,
+      yarnLockObject,
       'result is equal to yarn.lock file'
     )
   } catch (e) {
@@ -103,7 +94,6 @@ test('translate package-lock to yarn.lock with scopes', async t => {
     t.plan(1)
     const path = `${__dirname}/fixtures/deps-with-scopes`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
-    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const convertedYarnLock = await npmToYarn(path)
     const res = lockfile.parse(convertedYarnLock.replace(
       /registry.yarnpkg.com/g,
@@ -114,16 +104,9 @@ test('translate package-lock to yarn.lock with scopes', async t => {
       'registry.npmjs.org'
     )
     const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
-    const { dependencies } = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
-    const yarnLockObjReplaced = replaceNonSha1(
-      yarnLockObject,
-      resolvedWithNonSha1Hashes
-    )
-    const resReplaced = replaceNonSha1(res, resolvedWithNonSha1Hashes)
     t.deepEquals(
-      resReplaced.object,
-      yarnLockObjReplaced.object,
+      res,
+      yarnLockObject,
       'result is equal to yarn.lock file'
     )
   } catch (e) {
