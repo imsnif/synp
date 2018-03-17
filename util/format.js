@@ -1,5 +1,7 @@
 'use strict'
 
+const ssri = require('ssri')
+
 const { findDepVersion } = require('./traverse')
 
 function flattenPackageLock (deps, flattenedTree) {
@@ -14,14 +16,6 @@ function flattenPackageLock (deps, flattenedTree) {
     if (dependencies) flattenPackageLock(dependencies, flattenedTree)
     return flattenedTree
   }, flattenedTree)
-}
-
-function extractVersion (urlOrVersion, packageName) {
-  // http://<registry-url>/package-name/-/package-name-<version-number>.tgz
-  const re = new RegExp(`${packageName}/-/${packageName}-(.+?).tgz$`)
-  const matches = urlOrVersion.match(re)
-  if (matches && matches[1]) return matches[1]
-  return urlOrVersion
 }
 
 module.exports = {
@@ -55,26 +49,23 @@ module.exports = {
       }
     }, tree)
   },
-  formatYarnTree (yarnTree) {
-    return Object.keys(yarnTree).reduce((formatted, packageName) => {
-      const entry = yarnTree[packageName]
-      Object.keys(entry).forEach(version => {
-        const { semvers } = entry[version]
-        const nonUrlVersion = extractVersion(version, packageName)
-        semvers.forEach(sver => {
-          if (!entry[version].resolved && !/^http/.test(version)) {
-            return
-            // we cannot guess about this dependency - it is likely bundled
-            // might consider adding a warning
-          }
-          formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
-            semvers: undefined,
-            version: nonUrlVersion,
-            resolved: entry[version].resolved || version
-          })
-        })
-      })
-      return formatted
-    }, {})
+  formatYarnResolved (resolved, integrity) {
+    const hexChecksum = ssri.parse(integrity).hexDigest()
+    return `${resolved}#${hexChecksum}`
+  },
+  formatDependenciesForYarn (manifestDependencies, nodeDependencies) {
+    return Object.keys(manifestDependencies)
+      .reduce(({yarnDeps, yarnOptionalDeps}, depName) => {
+        const depLogicalEntry = nodeDependencies.get(depName)
+        const depSemver = manifestDependencies[depName]
+        if (!depLogicalEntry) return {yarnDeps, yarnOptionalDeps}
+        // not in package-lock, ignore it
+        if (depLogicalEntry.optional === true) {
+          yarnOptionalDeps[depName] = depSemver
+        } else {
+          yarnDeps[depName] = depSemver
+        }
+        return {yarnDeps, yarnOptionalDeps}
+      }, {yarnDeps: {}, yarnOptionalDeps: {}})
   }
 }
