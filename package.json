@@ -28,10 +28,16 @@
   },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.0.0",
+    "cli-progress": "^1.8.0",
     "colors": "^1.1.2",
     "commander": "^2.11.0",
     "eol": "^0.9.1",
-    "nmtree": "^1.0.3"
+    "md5": "^2.2.1",
+    "nmtree": "^1.0.3",
+    "npm-logical-tree": "^1.2.1",
+    "pacote": "^7.6.1",
+    "promise-queue": "^2.2.5",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
