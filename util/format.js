@@ -4,6 +4,8 @@ const ssri = require('ssri')
 
 module.exports = {
   formatYarnResolved (resolved, integrity) {
+    if (/^git/.test(resolved)) return resolved
+    // github urls use their branch checksum
     const hexChecksum = ssri.parse(integrity).hexDigest()
     return `${resolved}#${hexChecksum}`
   },
