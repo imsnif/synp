@@ -23,7 +23,7 @@ test('cli tool converts yarn.lock to package-lock.json', async t => {
       yarnExists: true
     })
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(
       synp.yarnToNpm.calledWith(packagePath),
       'proper converter called with proper path'
@@ -64,7 +64,7 @@ test('cli tool converts package-lock.json to yarn.lock', async t => {
       yarnExists: false
     })
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(
       synp.npmToYarn.calledWith(packagePath),
       'proper converter called with proper path'
@@ -105,7 +105,7 @@ test('cli prints help and exits with no source file', async t => {
       yarnExists: true
     })
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
     t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
     t.ok(fs.writeFileSync.notCalled, 'no file written')
@@ -136,7 +136,7 @@ test('cli prints help and exits with bad source file', async t => {
       yarnExists: true
     })
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
     t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
     t.ok(fs.writeFileSync.notCalled, 'no file written')
@@ -168,7 +168,7 @@ test('cli prints help and exits when source file does not exist', async t => {
       yarnIsDir: true
     })
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
     t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
     t.ok(fs.writeFileSync.notCalled, 'no file written')
@@ -192,7 +192,7 @@ test('cli prints help and exits when destination file exists', async t => {
     const mockedProgram = mockProgram(pLockPath)
     mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: true, yarnExists: true})
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
     t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
     t.ok(fs.writeFileSync.notCalled, 'no file written')
@@ -216,7 +216,7 @@ test('cli prints help and exits when destination file exists', async t => {
     const mockedProgram = mockProgram(pLockPath)
     mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: true, yarnExists: false, nodeModulesIsFile: true})
     const run = require('../cli/run')
-    run(mockedProgram)
+    await run(mockedProgram)
     t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
     t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
     t.ok(fs.writeFileSync.notCalled, 'no file written')
