@@ -202,13 +202,21 @@ test('translate yarn.lock to package-lock with github dependencies', async t => 
 test('translate package-lock to yarn.lock with github dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/github-dep-npm`
-    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
-    const res = await npmToYarn(path)
+    const path = `${__dirname}/fixtures/github-deps`
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnFile = await npmToYarn(path)
+    const res = lockfile.parse(
+      yarnFile.replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
+    )
+    const yarnLockWithNpmRegistry = yarnLock.replace(
+      /registry.yarnpkg.com/g,
+      'registry.npmjs.org'
+    )
+    const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
     t.deepEquals(
-      lockfile.parse(res),
-      lockfile.parse(yarnLock),
-      'result is equal to package-lock.json snapshot'
+      res,
+      yarnLockObject,
+      'result is equal to yarn.lock file'
     )
   } catch (e) {
     t.fail(e.stack)
