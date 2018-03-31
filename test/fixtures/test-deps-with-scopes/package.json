@@ -1,0 +1,11 @@
+{
+  "name": "deps-with-scopes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@storybook/react": "^3.2.15"
+  }
+}

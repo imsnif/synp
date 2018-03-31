@@ -4,10 +4,11 @@ const test = require('tape')
 const fs = require('fs')
 const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
-const {
-  findNonSha1Hashes,
-  normalizePackageLock
-} = require('./test-utils')
+const logicalTree = require('npm-logical-tree')
+
+const md5 = require('md5')
+
+const { npmLogicalTree, yarnLogicalTree } = require('./utils/logical-tree')
 
 test('translate with one root dependency', async t => {
   t.plan(2)
@@ -16,7 +17,7 @@ test('translate with one root dependency', async t => {
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     t.deepEquals(
-      JSON.parse(yarnToNpm(path)),
+      JSON.parse(await yarnToNpm(path)),
       JSON.parse(packageLock),
       'can convert yarn to npm'
     )
@@ -61,26 +62,16 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
     t.plan(1)
     const path = `${__dirname}/fixtures/multiple-level-deps`
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
-    const res = yarnToNpm(path).replace(
+    const res = await yarnToNpm(path)
+    const resReplaced = res.replace(
       /registry.yarnpkg.com/g,
       'registry.npmjs.org'
     )
-    const resParsed = JSON.parse(res)
+    const resParsed = JSON.parse(resReplaced)
     const packageLockParsed = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes(
-      {dependencies: packageLockParsed.dependencies}
-    )
-    const resReplaced = normalizePackageLock(
-      resParsed,
-      resolvedWithNonSha1Hashes
-    )
-    const packageLockReplaced = normalizePackageLock(
-      packageLockParsed,
-      resolvedWithNonSha1Hashes
-    )
     t.deepEquals(
-      resReplaced,
-      packageLockReplaced,
+      resParsed,
+      packageLockParsed,
       'result is equal to yarn.lock file'
     )
   } catch (e) {
@@ -115,30 +106,63 @@ test('translate package-lock to yarn.lock with scopes', async t => {
   }
 })
 
-test('translate yarn.lock to package-lock with scopes', async t => {
+function createYarnLogicalTree (yarnLockObject, packageJson) {
+  const tree = yarnLogicalTree(packageJson, yarnLockObject)
+  let flattened = {}
+  tree.forEach((node, cb) => {
+    // if (flattened[`${node.name}@${node.version}`] && node.optional) return
+    flattened[`${node.name}@${node.version}`] = {
+      name: node.name,
+      version: node.version,
+      dependencies: Array.from(node.dependencies.entries()).reduce((dependencies, [name, value]) => {
+        dependencies[name] = value.version
+        return dependencies
+      }, {})
+    }
+    cb()
+  })
+  return flattened
+}
+
+function createNpmLogicalTree (packageLock, packageJson) {
+  const tree = npmLogicalTree(packageJson, packageLock)
+  let flattened = {}
+  tree.forEach((node, cb) => {
+    flattened[`${node.name}@${node.version}`] = {
+      name: node.name,
+      version: node.version,
+      dependencies: Array.from(node.dependencies.entries()).reduce((dependencies, [name, value]) => {
+        dependencies[name] = value.version
+        return dependencies
+      }, {})
+    }
+    cb()
+  })
+  return flattened
+}
+
+test.only('translate yarn.lock to package-lock with scopes', async t => {
   try {
-    t.plan(1)
-    const path = `${__dirname}/fixtures/deps-with-scopes`
+    // t.plan(1)
+    // const path = `${__dirname}/fixtures/deps-with-scopes`
+    const path = `${__dirname}/fixtures/test-deps-with-scopes`
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
-    const res = yarnToNpm(path).replace(
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    // console.log('res:', res)
+    const resReplaced = res.replace(
       /registry.yarnpkg.com/g,
       'registry.npmjs.org'
     )
-    const resParsed = JSON.parse(res)
+    const resParsed = JSON.parse(resReplaced)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8').replace(/registry.yarnpkg.com/g, 'registry.npmjs.org')
+    const yarnLockParsed = lockfile.parse(yarnLock)
     const packageLockParsed = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes(
-      {dependencies: packageLockParsed.dependencies}
-    )
-    const resReplaced = normalizePackageLock(resParsed, resolvedWithNonSha1Hashes)
-    const packageLockReplaced = normalizePackageLock(
-      packageLockParsed,
-      resolvedWithNonSha1Hashes
-    )
-    t.deepEquals(
-      resReplaced,
-      packageLockReplaced,
-      'result is equal to package-lock.json file'
-    )
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical')
+    t.end()
   } catch (e) {
     t.fail(e.stack)
     t.end()
