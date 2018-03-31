@@ -81,9 +81,9 @@ module.exports = {
     // 4. package-lock.json => get physical tree, and add fields (for requires, loop through its manifest deps and check in the 'global' manifest)
     try {
       console.log('creating flat tree')
-      const flatTree = await createTreeManifest({manifest: packageJson, yarnObject}) // TODO: name
+      // const flatTree = await createTreeManifest({manifest: packageJson, yarnObject}) // TODO: name
       // fs.writeFileSync('/home/aram/backup/flat-tree.json', JSON.stringify(flatTree, false, 2))
-      // const flatTree = require('/home/aram/backup/flat-tree.json')
+      const flatTree = require('/home/aram/backup/flat-tree.json')
       const logicalTree = createLogicalTree({packageJson, flatTree, yarnObject})
       console.log('created logical tree')
       const physicalTree = createPhysicalTree({manifest: packageJson, flatTree, logicalTree})
