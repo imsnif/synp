@@ -86,9 +86,9 @@ module.exports = {
       const flatTree = require('/home/aram/backup/flat-tree.json')
       const logicalTree = createLogicalTree({packageJson, flatTree, yarnObject})
       console.log('created logical tree')
-      const physicalTree = createPhysicalTree({manifest: packageJson, flatTree, logicalTree})
+      const physicalTree = createPhysicalTree({logicalTree})
       console.log('created physical tree')
-      const packageLock = packageLockTree({physicalTree, logicalTree})
+      const packageLock = packageLockTree({physicalTree})
       console.log('created packageLock')
       const { name, version } = packageJson
       return jsonStringify(Object.assign({}, packageLock.toObject(), {
