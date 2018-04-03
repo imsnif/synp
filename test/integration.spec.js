@@ -106,7 +106,7 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
   }
 })
 
-test.skip('translate package-lock to yarn.lock with scopes', async t => { // TODO: FIX THIS TEST! issue with bundled deps
+test('translate package-lock to yarn.lock with scopes', async t => { // TODO: FIX THIS TEST! issue with bundled deps
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/deps-with-scopes`
@@ -142,7 +142,7 @@ test('translate yarn.lock to package-lock with scopes', async t => {
   }
 })
 
-test.skip('translate package-lock to yarn.lock with bundled dependencies', async t => { // TODO: FIX THIS TEST
+test('translate package-lock to yarn.lock with bundled dependencies', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/bundled-deps-npm`

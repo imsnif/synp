@@ -13,7 +13,7 @@ const jsonStringify = require('json-stable-stringify')
 const { yarnTree } = require('./lib/yarn-tree')
 const { createTreeManifest } = require('./lib/tree-manifest')
 
-const { createLogicalTree } = require('./lib/logical-tree')
+const { createLogicalTree, createLogicalTreeNpm } = require('./lib/logical-tree')
 const { createPhysicalTree } = require('./lib/physical-tree')
 const { packageLockTree } = require('./lib/package-lock-tree')
 
@@ -80,16 +80,10 @@ module.exports = {
     //
     // 4. package-lock.json => get physical tree, and add fields (for requires, loop through its manifest deps and check in the 'global' manifest)
     try {
-      console.log('creating flat tree')
-      // const flatTree = await createTreeManifest({manifest: packageJson, yarnObject}) // TODO: name
-      // fs.writeFileSync('/home/aram/backup/flat-tree.json', JSON.stringify(flatTree, false, 2))
-      const flatTree = require('/home/aram/backup/flat-tree.json')
+      const flatTree = await createTreeManifest({manifest: packageJson, yarnObject}) // TODO: name
       const logicalTree = createLogicalTree({packageJson, flatTree, yarnObject})
-      console.log('created logical tree')
       const physicalTree = createPhysicalTree({logicalTree})
-      console.log('created physical tree')
       const packageLock = packageLockTree({physicalTree})
-      console.log('created packageLock')
       const { name, version } = packageJson
       return jsonStringify(Object.assign({}, packageLock.toObject(), {
         name,
@@ -113,20 +107,24 @@ module.exports = {
     }
   },
   async npmToYarn (packageDir) {
-    const { packageJson, nodeModulesTree } = buildLogicalTree(packageDir)
-    const bar = createProgressBar(nodeModulesTree)
+    const packageJson = JSON.parse(
+      fs.readFileSync(path.join(packageDir, 'package.json'), 'utf-8')
+    )
+    const packageLock = JSON.parse(
+      fs.readFileSync(
+        path.join(packageDir, 'package-lock.json'),
+        'utf-8'
+      )
+    )
+    // const bar = createProgressBar(nodeModulesTree)
     try {
-      let tree = yarnTree(nodeModulesTree, packageJson)
-      await nodeModulesTree.forEachAsync(async (node, cb) => {
-        await tree.addEntry(node)
-        bar.increment()
-        await cb()
-      })
-      const yarnObj = tree.toObject()
-      bar.stop()
+      const logicalTree = await createLogicalTreeNpm({packageJson, packageLock})
+      const yarnLock = await yarnTree({logicalTree})
+      const yarnObj = yarnLock.toObject()
+      // bar.stop()
       return lockfile.stringify(yarnObj)
     } catch (e) {
-      bar.stop()
+      // bar.stop()
       throw e
     }
   }
