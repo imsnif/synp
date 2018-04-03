@@ -3,6 +3,8 @@
 const logicalTree = require('npm-logical-tree')
 const makeNode = logicalTree.node
 
+// TODO: SEPARATE MODULE
+
 module.exports = {
   yarnLogicalTree (pkg, yarnLock, opts) {
     const tree = makeNode(pkg.name, null, pkg)

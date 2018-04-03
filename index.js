@@ -13,7 +13,7 @@ const jsonStringify = require('json-stable-stringify')
 const { yarnTree } = require('./lib/yarn-tree')
 const { createTreeManifest } = require('./lib/tree-manifest')
 
-const { createLogicalTree, createLogicalTreeNpm } = require('./lib/logical-tree')
+const { createLogicalTreeNpm, createLogicalTreeYarn } = require('./lib/logical-tree')
 const { createPhysicalTree } = require('./lib/physical-tree')
 const { packageLockTree } = require('./lib/package-lock-tree')
 
@@ -73,15 +73,8 @@ module.exports = {
       fs.readFileSync(path.join(packageDir, 'package.json'), 'utf-8')
     )
     const yarnObject = lockfile.parse(yarnLockNormalized).object
-    // TODO:
-    // 1. create flatTree => [ {<pkgName>: [ {<version>: <manifest>} ] } ... ] - DONE!
-    // 2. create logicalTree => [ {<pkgName>: { manifest: <manifest>, children: [ <manifest> ] } ] - DONE!
-    // 3. create physicalTree => [ {<pkgName>: { manifest: <manifest>, children: [ <manifest> ] } ]
-    //
-    // 4. package-lock.json => get physical tree, and add fields (for requires, loop through its manifest deps and check in the 'global' manifest)
     try {
-      const flatTree = await createTreeManifest({manifest: packageJson, yarnObject}) // TODO: name
-      const logicalTree = createLogicalTree({packageJson, flatTree, yarnObject})
+      const logicalTree = await createLogicalTreeYarn({packageJson, yarnLock: yarnObject})
       const physicalTree = createPhysicalTree({logicalTree})
       const packageLock = packageLockTree({physicalTree})
       const { name, version } = packageJson
