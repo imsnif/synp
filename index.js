@@ -10,7 +10,7 @@ const cliProgress = require('cli-progress')
 
 const jsonStringify = require('json-stable-stringify')
 
-const { yarnTree } = require('./lib/yarn-tree')
+const { createYarnTree } = require('./lib/yarn-tree')
 const { createTreeManifest } = require('./lib/tree-manifest')
 
 const { createLogicalTreeNpm, createLogicalTreeYarn } = require('./lib/logical-tree')
@@ -112,10 +112,10 @@ module.exports = {
     // const bar = createProgressBar(nodeModulesTree)
     try {
       const logicalTree = await createLogicalTreeNpm({packageJson, packageLock})
-      const yarnLock = await yarnTree({logicalTree})
-      const yarnObj = yarnLock.toObject()
+      const yarnLock = createYarnTree({logicalTree})
+      // const yarnObj = yarnLock.toObject()
       // bar.stop()
-      return lockfile.stringify(yarnObj)
+      return lockfile.stringify(yarnLock)
     } catch (e) {
       // bar.stop()
       throw e

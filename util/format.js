@@ -1,27 +1,24 @@
 'use strict'
 
-const ssri = require('ssri')
-
 module.exports = {
-  formatYarnResolved (resolved, integrity) {
+  formatYarnResolved (resolved, shasum) {
     if (/^git/.test(resolved)) return resolved
     // github urls use their branch checksum
-    const hexChecksum = ssri.parse(integrity).hexDigest()
-    return `${resolved}#${hexChecksum}`
+    return `${resolved}#${shasum}`
   },
   formatDependenciesForYarn (manifestDependencies, nodeDependencies) {
     return Object.keys(manifestDependencies)
-      .reduce(({yarnDeps, yarnOptionalDeps}, depName) => {
+      .reduce(({deps, optDeps}, depName) => {
         const depLogicalEntry = nodeDependencies.get(depName)
         const depSemver = manifestDependencies[depName]
         if (!depLogicalEntry) return {yarnDeps, yarnOptionalDeps}
         // not in package-lock, ignore it
         if (depLogicalEntry.optional === true) {
-          yarnOptionalDeps[depName] = depSemver
+          optDeps[depName] = depSemver
         } else {
-          yarnDeps[depName] = depSemver
+          deps[depName] = depSemver
         }
-        return {yarnDeps, yarnOptionalDeps}
-      }, {yarnDeps: {}, yarnOptionalDeps: {}})
+        return {deps, optDeps}
+      }, {deps: {}, optDeps: {}})
   }
 }
