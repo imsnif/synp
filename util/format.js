@@ -1,5 +1,7 @@
 'use strict'
 
+const jsonStringify = require('json-stable-stringify')
+
 module.exports = {
   formatYarnResolved (resolved, shasum) {
     if (/^git/.test(resolved)) return resolved
@@ -20,5 +22,36 @@ module.exports = {
         }
         return {deps, optDeps}
       }, {deps: {}, optDeps: {}})
+  },
+  stringifyPackageLock ({packageLock, packageJson}) {
+    const { name, version } = packageJson
+    const keyPriorities = {
+      name: 1,
+      version: 2,
+      resolved: 3,
+      integrity: 4,
+      bundled: 5,
+      optional: 6,
+      lockfileVersion: 7,
+      requires: 8,
+      dependencies: 9
+    }
+    return jsonStringify(Object.assign({}, packageLock, {
+      name,
+      version,
+      lockfileVersion: 1,
+      requires: true
+    }), {
+      space: 2,
+      cmp: (a, b) => {
+        const aPriority = keyPriorities[a.key]
+        const bPriority = keyPriorities[b.key]
+        if (aPriority && bPriority) {
+          return aPriority < bPriority ? -1 : 1
+        } else {
+          return a.key < b.key ? -1 : 1
+        }
+      }
+    })
   }
 }
