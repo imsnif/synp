@@ -16,8 +16,7 @@
     "synp": "./cli/synp.js"
   },
   "scripts": {
-    "test": "tape ./test/*.spec.js | tap-spec",
-    "testOrig": "standard && tape ./test/*.spec.js | tap-spec",
+    "test": "standard && tape ./test/*.spec.js | tap-spec",
     "coverage": "nyc --reporter=lcov npm test",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },

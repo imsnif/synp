@@ -13,7 +13,7 @@ module.exports = {
       .reduce(({deps, optDeps}, depName) => {
         const depLogicalEntry = nodeDependencies.get(depName)
         const depSemver = manifestDependencies[depName]
-        if (!depLogicalEntry) return {yarnDeps, yarnOptionalDeps}
+        if (!depLogicalEntry) return {deps, optDeps}
         // not in package-lock, ignore it
         if (depLogicalEntry.optional === true) {
           optDeps[depName] = depSemver

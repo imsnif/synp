@@ -4,10 +4,7 @@ const test = require('tape')
 const fs = require('fs')
 const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
-const logicalTree = require('npm-logical-tree')
 const eol = require('eol')
-
-const md5 = require('md5')
 
 const { npmLogicalTree, yarnLogicalTree } = require('./utils/logical-tree')
 
@@ -46,7 +43,6 @@ function createNpmLogicalTree (packageLock, packageJson) {
   })
   return flattened
 }
-
 
 test('translate with one root dependency', async t => {
   t.plan(2)
