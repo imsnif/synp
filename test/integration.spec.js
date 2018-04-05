@@ -5,8 +5,10 @@ const fs = require('fs')
 const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
 const eol = require('eol')
-
 const { npmLogicalTree, yarnLogicalTree } = require('./utils/logical-tree')
+
+const { stubs } = require('./fixtures/manifest-cache')
+stubs()
 
 function createYarnLogicalTree (yarnLockObject, packageJson) {
   const tree = yarnLogicalTree(packageJson, yarnLockObject)
