@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
+    "nock": "^9.2.3",
     "nyc": "^11.3.0",
     "sinon": "^4.1.2",
     "standard": "^10.0.3",
