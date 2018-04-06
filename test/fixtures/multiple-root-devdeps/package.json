@@ -1,0 +1,14 @@
+{
+  "name": "multiple-root-devdeps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "abab": "^1.0.4"
+  }
+}

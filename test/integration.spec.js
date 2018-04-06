@@ -104,6 +104,150 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
   }
 })
 
+test('translate package-lock to yarn.lock with multiple root dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-deps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await npmToYarn(path)
+    const resParsed = lockfile.parse(res).object
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const packageLockParsed = JSON.parse(packageLock)
+    const resultLogicalTree = createYarnLogicalTree(resParsed, packageJson)
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    t.deepEquals(packageLockLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with multiple root dependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-deps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate package-lock to yarn.lock with root devDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-devdeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await npmToYarn(path)
+    const resParsed = lockfile.parse(res).object
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const packageLockParsed = JSON.parse(packageLock)
+    const resultLogicalTree = createYarnLogicalTree(resParsed, packageJson)
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    t.deepEquals(packageLockLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with root devDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-devdeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate package-lock to yarn.lock with root optionalDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-optionaldeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await npmToYarn(path)
+    const resParsed = lockfile.parse(res).object
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const packageLockParsed = JSON.parse(packageLock)
+    const resultLogicalTree = createYarnLogicalTree(resParsed, packageJson)
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    t.deepEquals(packageLockLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with root optionalDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-optionaldeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate package-lock to yarn.lock with root dependencies, devDependencies and optionalDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-alldeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await npmToYarn(path)
+    const resParsed = lockfile.parse(res).object
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const packageLockParsed = JSON.parse(packageLock)
+    const resultLogicalTree = createYarnLogicalTree(resParsed, packageJson)
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    t.deepEquals(packageLockLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with root dependencies, devDependencies and optionalDependencies', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/multiple-root-alldeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate package-lock to yarn.lock with scopes', async t => { // TODO: FIX THIS TEST! issue with bundled deps
   try {
     t.plan(1)
