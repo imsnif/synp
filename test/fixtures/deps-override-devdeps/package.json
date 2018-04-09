@@ -1,0 +1,14 @@
+{
+  "name": "deps-override-devdeps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "array-flatten": "^2.1.1"
+  },
+  "devDependencies": {
+    "express": "^4.16.3"
+  }
+}

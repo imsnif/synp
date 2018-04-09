@@ -188,6 +188,26 @@ test('translate yarn.lock to package-lock with root devDependencies', async t =>
   }
 })
 
+test('translate yarn.lock to package-lock with dependencies that override devDependencies', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/deps-override-devdeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const snapshot = fs.readFileSync(`${path}/.package-lock-snapshot`, 'utf-8')
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+    t.equals(res, snapshot, 'result identical to saved snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate package-lock to yarn.lock with root optionalDependencies', async t => {
   try {
     t.plan(2)
@@ -212,6 +232,26 @@ test('translate yarn.lock to package-lock with root optionalDependencies', async
   try {
     t.plan(2)
     const path = `${__dirname}/fixtures/multiple-root-optionaldeps`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const snapshot = fs.readFileSync(`${path}/.package-lock-snapshot`, 'utf-8')
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+    t.equals(res, snapshot, 'result identical to saved snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with dependencies that override optionalDependencies', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/deps-override-optionaldeps`
     const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
     const res = await yarnToNpm(path)
     const snapshot = fs.readFileSync(`${path}/.package-lock-snapshot`, 'utf-8')
