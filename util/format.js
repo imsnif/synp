@@ -8,21 +8,6 @@ module.exports = {
     // github urls use their branch checksum
     return `${resolved}#${shasum}`
   },
-  formatDependenciesForYarn (manifestDependencies, nodeDependencies) {
-    return Object.keys(manifestDependencies)
-      .reduce(({deps, optDeps}, depName) => {
-        const depLogicalEntry = nodeDependencies.get(depName)
-        const depSemver = manifestDependencies[depName]
-        if (!depLogicalEntry) return {deps, optDeps}
-        // not in package-lock, ignore it
-        if (depLogicalEntry.optional === true) {
-          optDeps[depName] = depSemver
-        } else {
-          deps[depName] = depSemver
-        }
-        return {deps, optDeps}
-      }, {deps: {}, optDeps: {}})
-  },
   stringifyPackageLock ({packageLock, packageJson}) {
     const { name, version } = packageJson
     const keyPriorities = {
@@ -30,11 +15,12 @@ module.exports = {
       version: 2,
       resolved: 3,
       integrity: 4,
-      bundled: 5,
-      optional: 6,
-      lockfileVersion: 7,
-      requires: 8,
-      dependencies: 9
+      dev: 5,
+      bundled: 6,
+      optional: 7,
+      lockfileVersion: 8,
+      requires: 9,
+      dependencies: 10
     }
     return jsonStringify(Object.assign({}, packageLock, {
       name,
