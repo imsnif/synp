@@ -6,7 +6,7 @@ const lockfile = require('@yarnpkg/lockfile')
 const eol = require('eol')
 
 const { createYarnTree } = require('./lib/yarn-tree')
-const { createLogicalTreeNpm, createLogicalTreeYarn } = require('./lib/logical-tree')
+const { createLogicalTree } = require('./lib/logical-tree')
 const { createPhysicalTree } = require('./lib/physical-tree')
 const { createPackageLockTree } = require('./lib/package-lock-tree')
 const { stringifyPackageLock } = require('./util/format')
@@ -23,7 +23,7 @@ module.exports = {
     )
     const yarnObject = lockfile.parse(yarnLockNormalized).object
     try {
-      const logicalTree = await createLogicalTreeYarn({packageJson, yarnLock: yarnObject})
+      const logicalTree = await createLogicalTree({packageJson, yarnLock: yarnObject})
       const physicalTree = createPhysicalTree({logicalTree})
       const packageLock = createPackageLockTree({physicalTree})
       return stringifyPackageLock({packageLock, packageJson})
@@ -42,7 +42,7 @@ module.exports = {
       )
     )
     try {
-      const logicalTree = await createLogicalTreeNpm({packageJson, packageLock})
+      const logicalTree = await createLogicalTree({packageJson, packageLock})
       const yarnLock = createYarnTree({logicalTree})
       return lockfile.stringify(yarnLock)
     } catch (e) {
