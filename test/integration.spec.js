@@ -391,7 +391,7 @@ test('translate yarn.lock to package-lock with bundled dependencies', async t =>
 test('translate yarn.lock to package-lock with github dependencies', async t => {
   try {
     t.plan(2)
-    const path = `${__dirname}/fixtures/github-dep-yarn`
+    const path = `${__dirname}/fixtures/github-deps`
     const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
     const res = await yarnToNpm(path)
     const snapshot = fs.readFileSync(`${path}/.package-lock-snapshot`, 'utf-8')
