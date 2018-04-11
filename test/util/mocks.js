@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const sinon = require('sinon')
-const synp = require('../')
+const synp = require('../../')
 
 module.exports = {
   mocks ({

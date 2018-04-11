@@ -4,7 +4,7 @@ const fs = require('fs')
 const test = require('tape')
 const sinon = require('sinon')
 const synp = require('../')
-const { mocks, mockProgram } = require('./mocks')
+const { mocks, mockProgram } = require('./util/mocks')
 
 test('cli tool converts yarn.lock to package-lock.json', async t => {
   t.plan(4)
