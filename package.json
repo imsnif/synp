@@ -39,7 +39,8 @@
     "npm-logical-tree": "^1.2.1",
     "pacote": "^7.6.1",
     "promise-queue": "^2.2.5",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "yarn-logical-tree": "^1.0.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
