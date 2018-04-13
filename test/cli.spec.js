@@ -205,27 +205,3 @@ test('cli prints help and exits when destination file exists', async t => {
     t.end()
   }
 })
-
-test('cli prints help and exits when destination file exists', async t => {
-  t.plan(5)
-  const sandbox = sinon.sandbox.create()
-  try {
-    const packagePath = '/foo/bar/baz'
-    const yarnPath = '/foo/bar/baz/yarn.lock'
-    const pLockPath = '/foo/bar/baz/package-lock.json'
-    const mockedProgram = mockProgram(pLockPath)
-    mocks({sandbox, packagePath, yarnPath, pLockPath, pLockExists: true, yarnExists: false, nodeModulesIsFile: true})
-    const run = require('../cli/run')
-    await run(mockedProgram)
-    t.ok(synp.yarnToNpm.notCalled, 'yarnToNpm not called')
-    t.ok(synp.npmToYarn.notCalled, 'npmToYarn not called')
-    t.ok(fs.writeFileSync.notCalled, 'no file written')
-    t.ok(process.exit.calledWith(2), 'program exited with proper exit status')
-    t.ok(mockedProgram.outputHelp.calledOnce, 'help text printed')
-    sandbox.restore()
-  } catch (e) {
-    t.fail(e.stack)
-    sandbox.restore()
-    t.end()
-  }
-})
