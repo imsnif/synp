@@ -3706,7 +3706,8 @@ yargs@~3.10.0:
     window-size "0.1.0"
 
 yarn-logical-tree@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/yarn-logical-tree/-/yarn-logical-tree-1.0.0.tgz#91f7c4fa68823b252361d55278113c856b51e51c"
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/yarn-logical-tree/-/yarn-logical-tree-1.0.2.tgz#11130e00333b02174efcfd5599a5e68ca356fa14"
   dependencies:
     npm-logical-tree "^1.2.1"
+    semver "^5.5.0"

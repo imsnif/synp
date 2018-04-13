@@ -23,7 +23,7 @@ module.exports = {
     )
     const yarnObject = lockfile.parse(yarnLockNormalized).object
     try {
-      const logicalTree = await createLogicalTree({packageJson, yarnLock: yarnObject})
+      const logicalTree = await createLogicalTree({packageJson, yarnLock: yarnObject, packageDir})
       const physicalTree = createPhysicalTree({logicalTree})
       const packageLock = createPackageLockTree({physicalTree})
       return stringifyPackageLock({packageLock, packageJson})
@@ -42,7 +42,7 @@ module.exports = {
       )
     )
     try {
-      const logicalTree = await createLogicalTree({packageJson, packageLock})
+      const logicalTree = await createLogicalTree({packageJson, packageLock, packageDir})
       const yarnLock = createYarnTree({logicalTree})
       return lockfile.stringify(yarnLock)
     } catch (e) {

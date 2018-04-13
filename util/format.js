@@ -4,6 +4,7 @@ const jsonStringify = require('json-stable-stringify')
 
 module.exports = {
   formatYarnResolved (resolved, shasum) {
+    if (/^\//.test(resolved)) return // no resolved for file dependencies
     if (/^git/.test(resolved)) return resolved
     // github urls use their branch checksum
     return `${resolved}#${shasum}`
