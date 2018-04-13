@@ -13,7 +13,8 @@ const { createPackageLockTree } = require('./lib/package-lock-tree')
 const { stringifyPackageLock } = require('./util/format')
 
 module.exports = {
-  async yarnToNpm (packageDir) {
+  async yarnToNpm (packageDir, logProgress) {
+    const log = logProgress || function () {}
     const yarnLock = fs.readFileSync(
       path.join(packageDir, 'yarn.lock'),
       'utf-8'
@@ -24,16 +25,20 @@ module.exports = {
     )
     const yarnObject = lockfile.parse(yarnLockNormalized).object
     try {
-      const getManifest = manifestFetcher(packageDir)
+      const getManifest = manifestFetcher(packageDir, log)
+      log('Creating logical tree...')
       const logicalTree = await createLogicalTree({packageJson, yarnLock: yarnObject, getManifest})
+      log('Creating physical tree...')
       const physicalTree = createPhysicalTree({logicalTree})
+      log('Formatting package-lock.json...')
       const packageLock = createPackageLockTree({physicalTree})
       return stringifyPackageLock({packageLock, packageJson})
     } catch (e) {
       throw e
     }
   },
-  async npmToYarn (packageDir) {
+  async npmToYarn (packageDir, logProgress) {
+    const log = logProgress || function () {}
     const packageJson = JSON.parse(
       fs.readFileSync(path.join(packageDir, 'package.json'), 'utf-8')
     )
@@ -44,8 +49,10 @@ module.exports = {
       )
     )
     try {
-      const getManifest = manifestFetcher(packageDir)
+      const getManifest = manifestFetcher(packageDir, log)
+      log('Creating logical tree...')
       const logicalTree = await createLogicalTree({packageJson, packageLock, getManifest})
+      log('Formatting yarn.lock...')
       const yarnLock = createYarnTree({logicalTree})
       return lockfile.stringify(yarnLock)
     } catch (e) {

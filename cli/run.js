@@ -2,6 +2,7 @@
 'use strict'
 const path = require('path')
 const colors = require('colors')
+const { Spinner } = require('cli-spinner')
 
 const synp = require('../')
 
@@ -22,7 +23,10 @@ module.exports = async function run (program) {
     const destinationFileName = sourceFileName === 'yarn.lock' ? 'package-lock.json' : 'yarn.lock'
     const destinationPath = sourceFile.split(path.sep).slice(0, -1).join(path.sep)
     const destination = path.join(destinationPath, destinationFileName)
-    const output = await convert(sourcePath)
+    const progressSpinner = new Spinner()
+    progressSpinner.start()
+    const output = await convert(sourcePath, (str) => progressSpinner.setSpinnerTitle(str))
+    progressSpinner.stop(true)
     writeOutput(output, destination)
   } catch (e) {
     console.error(colors.red(e.message))
