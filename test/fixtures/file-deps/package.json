@@ -1,0 +1,12 @@
+{
+  "name": "file-deps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Aram Drevekenin <grimsniffer@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "abab": "^1.0.1",
+    "pkg": "file:pkg"
+  }
+}
