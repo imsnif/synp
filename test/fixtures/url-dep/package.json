@@ -1,0 +1,11 @@
+{
+  "name": "url-dep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "abab": "https://registry.npmjs.org/abab/-/abab-1.0.4.tgz"
+  }
+}

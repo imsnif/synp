@@ -436,6 +436,46 @@ test('translate package-lock to yarn.lock with file dependencies', async t => {
   }
 })
 
+test('translate yarn.lock to package-lock with url dependencies', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/url-dep`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await yarnToNpm(path)
+    const snapshot = fs.readFileSync(`${path}/.package-lock-snapshot`, 'utf-8')
+    const resParsed = JSON.parse(res)
+    const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
+    const yarnLockParsed = lockfile.parse(yarnLock)
+    const yarnLogicalTree = createYarnLogicalTree(yarnLockParsed.object, packageJson)
+    const resultLogicalTree = createNpmLogicalTree(resParsed, packageJson)
+    t.deepEquals(yarnLogicalTree, resultLogicalTree, 'result logically identical to original')
+    t.equals(res, snapshot, 'result identical to saved snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate package-lock to yarn.lock with url dependencies', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/url-dep`
+    const packageJson = JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf-8'))
+    const res = await npmToYarn(path)
+    const snapshot = fs.readFileSync(`${path}/.yarn-snapshot`, 'utf-8')
+    const resParsed = lockfile.parse(res).object
+    const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
+    const packageLockParsed = JSON.parse(packageLock)
+    const resultLogicalTree = createYarnLogicalTree(resParsed, packageJson)
+    const packageLockLogicalTree = createNpmLogicalTree(packageLockParsed, packageJson)
+    t.deepEquals(packageLockLogicalTree, resultLogicalTree, 'result logically identical to original')
+    t.equals(res, snapshot, 'result identical to saved snapshot')
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate yarn.lock to package-lock with crlf line ending', async t => {
   try {
     t.plan(1)
@@ -463,9 +503,8 @@ test('error => corrupted package-lock to yarn.lock', async t => {
       await npmToYarn(path)
       t.fail('did not throw')
     } catch (e) {
-      t.equals(
-        e.message,
-        '404 Not Found: fake-dep@https://registry.npmjs.org/fake-dep/-/fake-dep-2.1.14.tgz',
+      t.ok(
+        /^404 Not Found:/.test(e.message),
         'proper error message'
       )
     }
