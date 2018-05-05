@@ -1,0 +1,14 @@
+{
+  "name": "github-private-dep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react-querybuilder": "github:natifyinc/react-querybuilder#6cc12313df37d7917d85454c9d17fb28853a3c9d"
+  }
+}
