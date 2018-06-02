@@ -316,7 +316,6 @@ test('translate package-lock to yarn.lock when integrity is absent', async t => 
     const path = `${__dirname}/fixtures/integrity-is-absent`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const res = npmToYarn(path)
-    console.log('res', res)
     t.deepEquals(
       lockfile.parse(res),
       lockfile.parse(yarnLock),
