@@ -50,14 +50,14 @@ module.exports = {
   },
   splitPathToModules (relativePath) {
     return relativePath
-    .filter(p => p !== 'node_modules')
-    .reduce((packages, dirName, index, rPath) => {
-      if (/^@/.test(dirName)) {
-        packages.push(`${dirName}/${rPath[index + 1]}`)
-      } else if (!(rPath[index - 1] && /^@/.test(rPath[index - 1]))) {
-        packages.push(dirName)
-      }
-      return packages
-    }, [])
+      .filter(p => p !== 'node_modules')
+      .reduce((packages, dirName, index, rPath) => {
+        if (/^@/.test(dirName)) {
+          packages.push(`${dirName}/${rPath[index + 1]}`)
+        } else if (!(rPath[index - 1] && /^@/.test(rPath[index - 1]))) {
+          packages.push(dirName)
+        }
+        return packages
+      }, [])
   }
 }
