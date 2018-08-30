@@ -9,7 +9,7 @@ function flattenPackageLock (deps, flattenedTree) {
     if (!deps[depName].bundled) {
       const resolved = deps[depName].resolved || version
       // https://docs.npmjs.com/files/package-lock.json#version-1
-      flattenedTree[`${depName}@${version}`] = Object.assign({}, deps[depName], {resolved})
+      flattenedTree[`${depName}@${version}`] = Object.assign({}, deps[depName], { resolved })
     }
     if (dependencies) flattenPackageLock(dependencies, flattenedTree)
     return flattenedTree

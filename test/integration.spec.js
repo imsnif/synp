@@ -47,7 +47,7 @@ test('translate package-lock to yarn.lock with multiple-level dependencies', asy
     )
     const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
     const { dependencies } = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
+    const resolvedWithNonSha1Hashes = findNonSha1Hashes({ dependencies })
     const yarnLockObjReplaced = replaceNonSha1(
       yarnLockObject,
       resolvedWithNonSha1Hashes
@@ -76,7 +76,7 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
     const resParsed = JSON.parse(res)
     const packageLockParsed = JSON.parse(packageLock)
     const resolvedWithNonSha1Hashes = findNonSha1Hashes(
-      {dependencies: packageLockParsed.dependencies}
+      { dependencies: packageLockParsed.dependencies }
     )
     const resReplaced = normalizePackageLock(
       resParsed,
@@ -113,7 +113,7 @@ test('translate package-lock to yarn.lock with scopes', async t => {
     )
     const yarnLockObject = lockfile.parse(yarnLockWithNpmRegistry)
     const { dependencies } = JSON.parse(packageLock)
-    const resolvedWithNonSha1Hashes = findNonSha1Hashes({dependencies})
+    const resolvedWithNonSha1Hashes = findNonSha1Hashes({ dependencies })
     const yarnLockObjReplaced = replaceNonSha1(
       yarnLockObject,
       resolvedWithNonSha1Hashes
@@ -142,7 +142,7 @@ test('translate yarn.lock to package-lock with scopes', async t => {
     const resParsed = JSON.parse(res)
     const packageLockParsed = JSON.parse(packageLock)
     const resolvedWithNonSha1Hashes = findNonSha1Hashes(
-      {dependencies: packageLockParsed.dependencies}
+      { dependencies: packageLockParsed.dependencies }
     )
     const resReplaced = normalizePackageLock(resParsed, resolvedWithNonSha1Hashes)
     const packageLockReplaced = normalizePackageLock(
