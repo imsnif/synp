@@ -21,6 +21,8 @@ synp --source-file /path/to/package-lock.json
 # will create /path/to/yarn.lock
 ```
 
+**Note:** if all you need is to convert in this direction (`package-lock.json` => `yarn.lock`), [as of 1.7.0](https://yarnpkg.com/blog/2018/06/04/yarn-import-package-lock/), Yarn is able to import its dependency tree from npm’s package-lock.json natively, without external tools. Use the `yarn import` command.
+
 ### programmatic usage
 ```javascript
 const { npmToYarn, yarnToNpm } = require('synp')
