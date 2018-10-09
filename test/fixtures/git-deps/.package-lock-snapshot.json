@@ -1,0 +1,12 @@
+{
+  "name": "git-deps",
+  "version": "1.0.0",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "abab": {
+      "version": "git+https://git@github.com/jsdom/abab.git#4327de3aae348710094d9f3c1f0c1477d9feb865",
+      "from": "git+https://git@github.com/jsdom/abab.git"
+    }
+  }
+}
