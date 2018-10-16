@@ -6,7 +6,7 @@
   "dependencies": {
     "abab": {
       "version": "https://registry.npmjs.org/abab/-/abab-1.0.4.tgz",
-      "integrity": "sha512-I+Wi+qiE2kUXyrRhNsWv6XsjUTBJjSoVSctKNBfLG5zG/Xe7Rjbxf13+vqYHNTwHaFU+FtSlVxOCTiMEVtPv0A=="
+      "integrity": "sha1-X6rZwsB/YN12dw9xzwJbYqY8/U4="
     }
   }
 }
