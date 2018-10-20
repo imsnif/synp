@@ -37,7 +37,14 @@ module.exports = {
       const yPackageName = yPackage.replace(/^(.+?)@.+?$/, '$1')
       return yPackageName === name && yarnObject[yPackage].version === version
     })
-    return yarnObject[packageKey]
+
+    const entry = yarnObject[packageKey]
+    const request = entry ? packageKey.match(/^.+?@(.+?)$/)[1] : undefined
+
+    return {
+      entry,
+      request
+    }
   },
   getParentPackageInYarnTree (modulesInPath, tree) {
     return modulesInPath.slice(0, -1).reduce((prev, next) => {

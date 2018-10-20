@@ -326,3 +326,37 @@ test('translate package-lock to yarn.lock when integrity is absent', async t => 
     t.end()
   }
 })
+
+test('translate yarn.lock to package-lock with tarball', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/tarball-deps`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(res),
+      JSON.parse(packageLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock to package-lock with git+https', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/git-deps`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(res),
+      JSON.parse(packageLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})

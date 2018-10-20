@@ -1,0 +1,12 @@
+{
+  "name": "tarball-deps",
+  "version": "1.0.0",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "abab": {
+      "version": "https://registry.npmjs.org/abab/-/abab-1.0.4.tgz",
+      "integrity": "sha1-X6rZwsB/YN12dw9xzwJbYqY8/U4="
+    }
+  }
+}
