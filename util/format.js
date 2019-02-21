@@ -62,15 +62,24 @@ module.exports = {
         const { semvers } = entry[version]
         const nonUrlVersion = extractVersion(version, packageName)
         semvers.forEach(sver => {
-          if (!entry[version].resolved && !/^http/.test(version)) {
-            return
-            // we cannot guess about this dependency - it is likely bundled
-            // might consider adding a warning
+          const versionEntry = entry[version]
+          let { resolved } = versionEntry
+          if (!resolved) {
+            const sverIsFileDependency = /^file:/.test(sver)
+            if (sverIsFileDependency) {
+              resolved = undefined
+            } else if (!/^http/.test(version)) {
+              // we cannot guess about this dependency - it is likely bundled
+              // might consider adding a warning
+              return
+            } else {
+              resolved = version
+            }
           }
-          formatted[`${packageName}@${sver}`] = Object.assign({}, entry[version], {
+          formatted[`${packageName}@${sver}`] = Object.assign({}, versionEntry, {
             semvers: undefined,
             version: nonUrlVersion,
-            resolved: entry[version].resolved || version
+            resolved
           })
         })
       })
