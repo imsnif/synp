@@ -1,0 +1,11 @@
+{
+  "name": "file-deps",
+  "version": "1.0.0",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "local-package": {
+      "version": "file:../local-package"
+    }
+  }
+}

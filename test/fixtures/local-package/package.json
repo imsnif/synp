@@ -1,0 +1,7 @@
+{
+  "name": "local-package",
+  "version": "1.0.0",
+  "description": "Used for testing file-deps to avoid test dependencies.",
+  "main": "index.js",
+  "license": "ISC"
+}

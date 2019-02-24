@@ -25,12 +25,20 @@ function findDepVersion (dep, nodeModulesTree, parentPath) {
   }
 }
 
+function findFileEntryInPackageLock (name, flattenedPackageLock) {
+  const packageKey = Object.keys(flattenedPackageLock).find(key => {
+    return key.startsWith(`${name}@file:`)
+  })
+  return flattenedPackageLock[packageKey]
+}
+
 module.exports = {
   findDepVersion,
   findEntryInPackageLock (entry, flattenedPackageLock) {
     const { name, version, _resolved } = entry
     return flattenedPackageLock[`${name}@${version}`] ||
-      flattenedPackageLock[`${name}@${_resolved}`]
+      flattenedPackageLock[`${name}@${_resolved}`] ||
+      findFileEntryInPackageLock(name, flattenedPackageLock)
   },
   findPackageInYarnLock (name, version, yarnObject) {
     const packageKey = Object.keys(yarnObject).find(yPackage => {

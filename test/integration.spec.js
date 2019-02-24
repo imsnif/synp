@@ -360,3 +360,37 @@ test('translate yarn.lock to package-lock with git+https', async t => {
     t.end()
   }
 })
+
+test('translate yarn.lock to package-lock with file', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/file-deps-yarn`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(res),
+      JSON.parse(packageLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate package-lock to yarn.lock with file', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/file-deps-npm`
+    const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const res = npmToYarn(path)
+    t.deepEquals(
+      lockfile.parse(res),
+      lockfile.parse(yarnLock),
+      'result is equal to yarn.lock snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
