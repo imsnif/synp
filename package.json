@@ -16,7 +16,7 @@
     "synp": "./cli/synp.js"
   },
   "scripts": {
-    "test": "standard && tape ./test/*.spec.js | tap-spec",
+    "test": "standard && tape ./test/*.spec.js",
     "coverage": "nyc --reporter=lcov npm test",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
@@ -31,15 +31,15 @@
     "colors": "^1.1.2",
     "commander": "^2.11.0",
     "eol": "^0.9.1",
+    "lodash": "4.17.11",
     "nmtree": "^1.0.3",
     "request": "^2.79.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
-    "nyc": "^11.3.0",
+    "nyc": "13.3.0",
     "sinon": "^4.1.2",
     "standard": "^12.0.0",
-    "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
   }
 }
