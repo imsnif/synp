@@ -61,7 +61,7 @@ module.exports = {
       Object.keys(entry).forEach(version => {
         const { semvers } = entry[version]
         const nonUrlVersion = extractVersion(version, packageName)
-        semvers.forEach(sver => {
+        semvers && semvers.forEach(sver => {
           const versionEntry = entry[version]
           let { resolved } = versionEntry
           if (!resolved) {
