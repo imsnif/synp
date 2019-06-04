@@ -1,45 +1,47 @@
 {
-  "name": "synp",
+  "name": "synp2",
   "version": "1.4.0",
   "description": "Convert yarn.lock to package-lock.json and vice versa",
   "keywords": [
-    "yarn",
+    "convert",
     "package-lock",
     "package-lock.json",
-    "yarn.lock",
-    "convert",
     "transform",
-    "translate"
+    "translate",
+    "yarn",
+    "yarn.lock"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imsnif/synp.git"
+  },
+  "license": "MIT",
+  "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "main": "index.js",
   "bin": {
     "synp": "./cli/synp.js"
   },
   "scripts": {
-    "test": "standard && tape ./test/*.spec.js",
     "coverage": "nyc --reporter=lcov npm test",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
-  },
-  "author": "Aram Drevekenin <grimsniffer@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/imsnif/synp.git"
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "ncu": "npx yarn-tool ncu -u",
+    "prepublishOnly": "npm run ncu && npm run sort-package-json",
+    "postpublish": "git commit -m \"publish new version\" .",
+    "sort-package-json": "npx sort-package-json package.json",
+    "test": "tape ./test/*.spec.js"
   },
   "dependencies": {
-    "@yarnpkg/lockfile": "^1.0.0",
-    "colors": "^1.1.2",
-    "commander": "^2.11.0",
+    "@yarnpkg/lockfile": "^1.1.0",
+    "colors": "^1.3.3",
+    "commander": "^2.20.0",
     "eol": "^0.9.1",
-    "lodash": "4.17.11",
-    "nmtree": "^1.0.3",
-    "request": "^2.79.0"
+    "nmtree": "^1.0.4",
+    "request": "^2.88.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
-    "nyc": "13.3.0",
-    "sinon": "^4.1.2",
-    "standard": "^12.0.0",
-    "tape": "^4.8.0"
+    "coveralls": "^3.0.3",
+    "nyc": "14.1.1",
+    "sinon": "^7.3.2",
+    "tape": "^4.10.2"
   }
 }
