@@ -8,6 +8,7 @@ const run = require('./run')
 program
   .version(version)
   .option('-s, --source-file [source-file]', 'The path to the yarn.lock or package-lock.json to be converted')
+  .option('-f, --force', 'Force overwrite destination file')
   .parse(process.argv)
 
 run(program)
