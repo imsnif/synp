@@ -37,10 +37,11 @@ module.exports = {
     sandbox.stub(synp, 'npmToYarn')
       .returns('{"mockedResult": "mockedResult"}')
   },
-  mockProgram (sourceFile) {
+  mockProgram (sourceFile, force = false) {
     return {
       sourceFile,
-      outputHelp: sinon.spy()
+      outputHelp: sinon.spy(),
+      force
     }
   }
 }
