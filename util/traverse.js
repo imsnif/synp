@@ -59,7 +59,7 @@ module.exports = {
       if (prev && (prev[next] || (prev.dependencies && prev.dependencies[next]))) {
         return prev[next] || prev.dependencies[next]
       } else {
-        return tree
+        return { dependencies: tree }
       }
     }, tree)
   },
