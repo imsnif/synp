@@ -395,7 +395,7 @@ test('translate package-lock to yarn.lock with file', async t => {
   }
 })
 
-test.only('translate yarn.lock with workspaces to package-lock ', async t => {
+test('translate yarn.lock with workspaces to package-lock ', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/yarn-workspace`
