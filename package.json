@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.0.0",
+    "bash-glob": "^2.0.0",
     "colors": "^1.1.2",
     "commander": "^2.11.0",
     "eol": "^0.9.1",

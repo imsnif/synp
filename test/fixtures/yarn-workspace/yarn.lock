@@ -12,16 +12,30 @@
   "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz"
   "version" "2.1.0"
 
-"@antongolub/empty-package@3.1.2":
+"@antongolub/empty-package@^3.1.2":
   "integrity" "sha512-nb7fnhZW2KCsDvodMG0cgqbMZedFUJH7tUU4RG1Nd9x1UD+RR77AjfcApa0kvQZYblHGFcQnLaB+tONLcPz/JA=="
   "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz"
   "version" "3.1.2"
+
+"@antongolub/empty-package@^4.0.1":
+  "integrity" "sha512-VEUh7KknI0SONBSMF72t/OnjxPF1pbb1vJg1uWLzUuhzGwytmxlvVAnT5bM3J67ApcvVqiPjZg6QU7L1Pe4xwQ=="
+  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-4.0.1.tgz"
+  "version" "4.0.1"
+  dependencies:
+    "@antongolub/empty-package" "^3.1.2"
+
+"@antongolub/empty-package@5.0.0":
+  "integrity" "sha512-yMYSdRult9Rgkc0Yf/ys3v5l174HkOmR0ARdcsjm+NFqzi1rxKubrNcidLHLfzMwWXFo42Xipnh2cL538oZ5OQ=="
+  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "@antongolub/empty-package" "^4.0.1"
 
 "bar@file:/Users/a.golub/projects/synp/test/fixtures/yarn-workspace/packages/bar":
   "resolved" "file:packages/bar"
   "version" "1.0.0"
   dependencies:
-    "@antongolub/empty-package" "3.1.2"
+    "@antongolub/empty-package" "5.0.0"
 
 "foo@file:/Users/a.golub/projects/synp/test/fixtures/yarn-workspace/packages/foo":
   "resolved" "file:packages/foo"

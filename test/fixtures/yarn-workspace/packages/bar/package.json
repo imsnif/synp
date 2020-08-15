@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@antongolub/empty-package": "3.1.2"
+    "@antongolub/empty-package": "5.0.0"
   }
 }
