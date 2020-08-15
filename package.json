@@ -16,7 +16,8 @@
     "synp": "./cli/synp.js"
   },
   "scripts": {
-    "test": "standard && tape ./test/*.spec.js",
+    "test": "standard && npm run test:unit",
+    "test:unit": "tape ./test/*.spec.js",
     "coverage": "nyc --reporter=lcov npm test",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },

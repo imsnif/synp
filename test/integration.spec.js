@@ -394,3 +394,23 @@ test('translate package-lock to yarn.lock with file', async t => {
     t.end()
   }
 })
+
+test.only('translate yarn.lock with workspaces to package-lock ', async t => {
+  try {
+    t.plan(1)
+    const path = `${__dirname}/fixtures/yarn-workspace`
+    const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const res = yarnToNpm(path)
+
+    console.log('res=', res)
+
+    t.deepEquals(
+      JSON.parse(res),
+      JSON.parse(packageLock),
+      'result is equal to package-lock.json snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
