@@ -427,7 +427,6 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
       removeUrlHash(lockfile.parse(yarnLockSnap)),
       'result is equal to yarn.lock snapshot'
     )
-
   } catch (e) {
     t.fail(e.stack)
     t.end()
