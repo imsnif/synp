@@ -2,43 +2,31 @@
 # yarn lockfile v1
 
 
-"@antongolub/empty-package@^1.0.0":
-  "integrity" "sha512-+vH2Oo0wQ+6k1wzXjVzrA0A7Y0Huo++dmJO6i95ufx788EqGKvdSG+2ovRmXSZmoX+dKw/dQ85imIyu3f9z+/w=="
-  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-1.0.0.tgz"
-  "version" "1.0.0"
-
-"@antongolub/empty-package@^2.0.0":
-  "integrity" "sha512-09OBTu/IQ7YqSfsBUi+/4U1zGq3Wu6RTTdVvdnOHVHV5PM3Pj1FlbGw7/Z2tRN5NcAT28gYSRzBkPayREIxjTg=="
-  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz"
-  "version" "2.1.0"
-
-"@antongolub/empty-package@^3.1.2":
-  "integrity" "sha512-nb7fnhZW2KCsDvodMG0cgqbMZedFUJH7tUU4RG1Nd9x1UD+RR77AjfcApa0kvQZYblHGFcQnLaB+tONLcPz/JA=="
-  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz"
-  "version" "3.1.2"
-
-"@antongolub/empty-package@^4.0.1":
-  "integrity" "sha512-VEUh7KknI0SONBSMF72t/OnjxPF1pbb1vJg1uWLzUuhzGwytmxlvVAnT5bM3J67ApcvVqiPjZg6QU7L1Pe4xwQ=="
-  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-4.0.1.tgz"
-  "version" "4.0.1"
-  dependencies:
-    "@antongolub/empty-package" "^3.1.2"
-
 "@antongolub/empty-package@5.0.0":
-  "integrity" "sha512-yMYSdRult9Rgkc0Yf/ys3v5l174HkOmR0ARdcsjm+NFqzi1rxKubrNcidLHLfzMwWXFo42Xipnh2cL538oZ5OQ=="
-  "resolved" "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-5.0.0.tgz"
-  "version" "5.0.0"
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-5.0.0.tgz#3d2f6cd142fec5469257060af29ace33e395bd7d"
+  integrity sha512-yMYSdRult9Rgkc0Yf/ys3v5l174HkOmR0ARdcsjm+NFqzi1rxKubrNcidLHLfzMwWXFo42Xipnh2cL538oZ5OQ==
   dependencies:
     "@antongolub/empty-package" "^4.0.1"
 
-"bar@file:/Users/a.golub/projects/synp/test/fixtures/yarn-workspace/packages/bar":
-  "resolved" "file:packages/bar"
-  "version" "1.0.0"
-  dependencies:
-    "@antongolub/empty-package" "5.0.0"
+"@antongolub/empty-package@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-1.0.0.tgz#90fd1d53fb98c60d4c59719e4fa80874303a7b11"
+  integrity sha512-+vH2Oo0wQ+6k1wzXjVzrA0A7Y0Huo++dmJO6i95ufx788EqGKvdSG+2ovRmXSZmoX+dKw/dQ85imIyu3f9z+/w==
 
-"foo@file:/Users/a.golub/projects/synp/test/fixtures/yarn-workspace/packages/foo":
-  "resolved" "file:packages/foo"
-  "version" "1.0.0"
+"@antongolub/empty-package@^2.0.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz#2807b4162a1b6b352975218079f348c22dab5843"
+  integrity sha512-09OBTu/IQ7YqSfsBUi+/4U1zGq3Wu6RTTdVvdnOHVHV5PM3Pj1FlbGw7/Z2tRN5NcAT28gYSRzBkPayREIxjTg==
+
+"@antongolub/empty-package@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz#ecf4295356f6dabac9a793a10969a6559fc2adbb"
+  integrity sha512-nb7fnhZW2KCsDvodMG0cgqbMZedFUJH7tUU4RG1Nd9x1UD+RR77AjfcApa0kvQZYblHGFcQnLaB+tONLcPz/JA==
+
+"@antongolub/empty-package@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-4.0.1.tgz#deeac69e65c71c694bc34144592bc3ac8ea45dd0"
+  integrity sha512-VEUh7KknI0SONBSMF72t/OnjxPF1pbb1vJg1uWLzUuhzGwytmxlvVAnT5bM3J67ApcvVqiPjZg6QU7L1Pe4xwQ==
   dependencies:
-    "@antongolub/empty-package" "^2.0.0"
+    "@antongolub/empty-package" "^3.1.2"
