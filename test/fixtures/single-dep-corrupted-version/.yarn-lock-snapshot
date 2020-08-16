@@ -5,7 +5,9 @@
 abab@^1.0.1:
   version "1.0.4"
   resolved "https://registry.npmjs.org/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
+  integrity sha1-X6rZwsB/YN12dw9xzwJbYqY8/U4=
 
 fake-dep@^1.0.0:
   version "2.1.14"
   resolved "https://registry.npmjs.org/fake-dep/-/fake-dep-2.1.14.tgz#f7ef7d97583fcaf3b7d282b6f8b5679dab1e94ee"
+  integrity sha1-9+99l1g/yvO30oK2+LVnnaselO4=
