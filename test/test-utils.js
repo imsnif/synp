@@ -13,7 +13,8 @@ function findNonSha1Hashes ({ dependencies, memo = [] }) {
 }
 
 function replaceNonSha1 (yarnObj, resolvedWithNonSha1Hashes) {
-  return Object.assign({}, yarnObj, { object:
+  return Object.assign({}, yarnObj, {
+    object:
     Object.keys(yarnObj.object).reduce((memo, packageName) => {
       const entry = yarnObj.object[packageName]
       const strippedResolved = entry.resolved.replace(/#.+?$/, '')
@@ -28,11 +29,12 @@ function replaceNonSha1 (yarnObj, resolvedWithNonSha1Hashes) {
 }
 
 function normalizePackageLock (npmObj, resolvedWithNonSha1Hashes) {
-  return Object.assign({}, npmObj, { dependencies:
+  return Object.assign({}, npmObj, {
+    dependencies:
     Object.keys(npmObj.dependencies).reduce((memo, packageName) => {
       const entry = npmObj.dependencies[packageName]
       if (resolvedWithNonSha1Hashes.indexOf(entry.resolved) !== -1) {
-        memo[packageName] = Object.assign({}, entry, { integrity: `N/A` })
+        memo[packageName] = Object.assign({}, entry, { integrity: 'N/A' })
       } else {
         memo[packageName] = entry
       }
