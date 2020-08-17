@@ -413,18 +413,9 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
 
     fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
     const yarnLock = npmToYarn(path)
-    // NOTE this is required because url hash refers to sha1, but integrity field may be sha-512 at the same time
-    const removeUrlHash = (file) => {
-      Object.keys(file.object).forEach((name) => {
-        const resolved = file.object[name].resolved
-        file.object[name].resolved = resolved.slice(0, resolved.lastIndexOf('#'))
-      })
-
-      return file
-    }
     t.deepEquals(
-      removeUrlHash(lockfile.parse(yarnLock)),
-      removeUrlHash(lockfile.parse(yarnLockSnap)),
+      lockfile.parse(yarnLock),
+      lockfile.parse(yarnLockSnap),
       'result is equal to yarn.lock snapshot'
     )
   } catch (e) {

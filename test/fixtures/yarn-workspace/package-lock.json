@@ -18,7 +18,7 @@
     "node_modules/@antongolub/empty-package": {
       "version": "1.0.0",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-1.0.0.tgz",
-      "integrity": "sha512-+vH2Oo0wQ+6k1wzXjVzrA0A7Y0Huo++dmJO6i95ufx788EqGKvdSG+2ovRmXSZmoX+dKw/dQ85imIyu3f9z+/w==",
+      "integrity": "sha1-kP0dU/uYxg1MWXGeT6gIdDA6exE=",
       "license": "MIT"
     },
     "node_modules/bar": {
@@ -39,7 +39,7 @@
     "packages/bar/node_modules/@antongolub/empty-package": {
       "version": "5.0.0",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-5.0.0.tgz",
-      "integrity": "sha512-yMYSdRult9Rgkc0Yf/ys3v5l174HkOmR0ARdcsjm+NFqzi1rxKubrNcidLHLfzMwWXFo42Xipnh2cL538oZ5OQ==",
+      "integrity": "sha1-PS9s0UL+xUaSVwYK8prOM+OVvX0=",
       "license": "MIT",
       "dependencies": {
         "@antongolub/empty-package": "^4.0.1"
@@ -48,7 +48,7 @@
     "packages/bar/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package": {
       "version": "4.0.1",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-4.0.1.tgz",
-      "integrity": "sha512-VEUh7KknI0SONBSMF72t/OnjxPF1pbb1vJg1uWLzUuhzGwytmxlvVAnT5bM3J67ApcvVqiPjZg6QU7L1Pe4xwQ==",
+      "integrity": "sha1-3urGnmXHHGlLw0FEWSvDrI6kXdA=",
       "license": "MIT",
       "dependencies": {
         "@antongolub/empty-package": "^3.1.2"
@@ -57,7 +57,7 @@
     "packages/bar/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package": {
       "version": "3.1.2",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz",
-      "integrity": "sha512-nb7fnhZW2KCsDvodMG0cgqbMZedFUJH7tUU4RG1Nd9x1UD+RR77AjfcApa0kvQZYblHGFcQnLaB+tONLcPz/JA==",
+      "integrity": "sha1-7PQpU1b22rrJp5OhCWmmVZ/Crbs=",
       "license": "MIT"
     },
     "packages/foo-package-dir": {
@@ -70,7 +70,7 @@
     "packages/foo-package-dir/node_modules/@antongolub/empty-package": {
       "version": "2.1.0",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz",
-      "integrity": "sha512-09OBTu/IQ7YqSfsBUi+/4U1zGq3Wu6RTTdVvdnOHVHV5PM3Pj1FlbGw7/Z2tRN5NcAT28gYSRzBkPayREIxjTg==",
+      "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM=",
       "license": "MIT"
     }
   },
@@ -78,7 +78,7 @@
     "@antongolub/empty-package": {
       "version": "1.0.0",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-1.0.0.tgz",
-      "integrity": "sha512-+vH2Oo0wQ+6k1wzXjVzrA0A7Y0Huo++dmJO6i95ufx788EqGKvdSG+2ovRmXSZmoX+dKw/dQ85imIyu3f9z+/w=="
+      "integrity": "sha1-kP0dU/uYxg1MWXGeT6gIdDA6exE="
     },
     "bar": {
       "version": "file:packages/bar",
@@ -89,7 +89,7 @@
         "@antongolub/empty-package": {
           "version": "5.0.0",
           "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-5.0.0.tgz",
-          "integrity": "sha512-yMYSdRult9Rgkc0Yf/ys3v5l174HkOmR0ARdcsjm+NFqzi1rxKubrNcidLHLfzMwWXFo42Xipnh2cL538oZ5OQ==",
+          "integrity": "sha1-PS9s0UL+xUaSVwYK8prOM+OVvX0=",
           "requires": {
             "@antongolub/empty-package": "^4.0.1"
           },
@@ -97,7 +97,7 @@
             "@antongolub/empty-package": {
               "version": "4.0.1",
               "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-4.0.1.tgz",
-              "integrity": "sha512-VEUh7KknI0SONBSMF72t/OnjxPF1pbb1vJg1uWLzUuhzGwytmxlvVAnT5bM3J67ApcvVqiPjZg6QU7L1Pe4xwQ==",
+              "integrity": "sha1-3urGnmXHHGlLw0FEWSvDrI6kXdA=",
               "requires": {
                 "@antongolub/empty-package": "^3.1.2"
               },
@@ -105,7 +105,7 @@
                 "@antongolub/empty-package": {
                   "version": "3.1.2",
                   "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz",
-                  "integrity": "sha512-nb7fnhZW2KCsDvodMG0cgqbMZedFUJH7tUU4RG1Nd9x1UD+RR77AjfcApa0kvQZYblHGFcQnLaB+tONLcPz/JA=="
+                  "integrity": "sha1-7PQpU1b22rrJp5OhCWmmVZ/Crbs="
                 }
               }
             }
@@ -122,7 +122,7 @@
         "@antongolub/empty-package": {
           "version": "2.1.0",
           "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz",
-          "integrity": "sha512-09OBTu/IQ7YqSfsBUi+/4U1zGq3Wu6RTTdVvdnOHVHV5PM3Pj1FlbGw7/Z2tRN5NcAT28gYSRzBkPayREIxjTg=="
+          "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM="
         }
       }
     }
