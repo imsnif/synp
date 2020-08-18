@@ -3,15 +3,13 @@
 const path = require('path')
 
 function parentPackagePath (parentPath) {
-  const dirs = parentPath.split(path.sep)
-  const pathDirs = dirs.slice(0, dirs.length - 1)
-  if (pathDirs[pathDirs.length - 1] === 'node_modules') {
-    return parentPackagePath(pathDirs.join(path.sep))
-  } else if (pathDirs.join(path.sep) === parentPath) {
+  const nmPos = parentPath.lastIndexOf('/node_modules/')
+
+  if (nmPos === -1) {
     throw new Error('Could not find parent dir!')
-  } else {
-    return pathDirs.join(path.sep)
   }
+
+  return parentPath.slice(0, nmPos)
 }
 
 function findDepVersion (dep, nodeModulesTree, parentPath) {
@@ -74,5 +72,6 @@ module.exports = {
         }
         return packages
       }, [])
-  }
+  },
+  parentPackagePath
 }

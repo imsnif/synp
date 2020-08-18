@@ -29,6 +29,12 @@
       "resolved": "packages/foo-package-dir",
       "link": true
     },
+    "node_modules/lodash": {
+      "version": "4.17.20",
+      "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz",
+      "integrity": "sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=",
+      "license": "MIT"
+    },
     "packages/bar": {
       "version": "1.0.0",
       "license": "ISC",
@@ -125,6 +131,12 @@
           "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM="
         }
       }
+    },
+    "lodash": {
+      "version": "4.17.20",
+      "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz",
+      "integrity": "sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=",
+      "dev": true
     }
   }
 }

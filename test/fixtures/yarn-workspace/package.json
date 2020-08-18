@@ -9,5 +9,8 @@
   ],
   "dependencies": {
     "@antongolub/empty-package": "^1.0.0"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.20"
   }
 }
