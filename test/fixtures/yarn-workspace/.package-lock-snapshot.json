@@ -13,6 +13,9 @@
       ],
       "dependencies": {
         "@antongolub/empty-package": "^1.0.0"
+      },
+      "devDependencies": {
+        "lodash": "^4.17.20"
       }
     },
     "node_modules/@antongolub/empty-package": {
@@ -33,7 +36,8 @@
       "version": "4.17.20",
       "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz",
       "integrity": "sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=",
-      "license": "MIT"
+      "license": "MIT",
+      "dev": true
     },
     "packages/bar": {
       "version": "1.0.0",
