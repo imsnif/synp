@@ -310,12 +310,13 @@ test('error => no source files', async t => {
   }
 })
 
-test('translate package-lock to yarn.lock when integrity is absent', async t => {
+test('translate package-lock to yarn.lock when integrity url hash is absent, but integrity field is present', async t => {
   try {
     t.plan(1)
     const path = `${__dirname}/fixtures/integrity-is-absent`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const res = npmToYarn(path)
+
     t.deepEquals(
       lockfile.parse(res),
       lockfile.parse(yarnLock),
@@ -387,6 +388,34 @@ test('translate package-lock to yarn.lock with file', async t => {
     t.deepEquals(
       lockfile.parse(res),
       lockfile.parse(yarnLock),
+      'result is equal to yarn.lock snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('translate yarn.lock with workspaces to package-lock and vice versa', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/yarn-workspace`
+    const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+
+    fs.writeFileSync(`${path}/yarn.lock`, yarnLockSnap)
+    const packageLock = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(packageLock),
+      JSON.parse(packageLockSnap),
+      'result is equal to package-lock.json snapshot'
+    )
+
+    fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
+    const yarnLock = npmToYarn(path)
+    t.deepEquals(
+      lockfile.parse(yarnLock),
+      lockfile.parse(yarnLockSnap),
       'result is equal to yarn.lock snapshot'
     )
   } catch (e) {

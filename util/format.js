@@ -59,7 +59,7 @@ module.exports = {
     return Object.keys(yarnTree).reduce((formatted, packageName) => {
       const entry = yarnTree[packageName]
       Object.keys(entry).forEach(version => {
-        const { semvers } = entry[version]
+        const { semvers, integrity } = entry[version]
         const nonUrlVersion = extractVersion(version, packageName)
         semvers && semvers.forEach(sver => {
           const versionEntry = entry[version]
@@ -76,10 +76,12 @@ module.exports = {
               resolved = version
             }
           }
+
           formatted[`${packageName}@${sver}`] = Object.assign({}, versionEntry, {
             semvers: undefined,
             version: nonUrlVersion,
-            resolved
+            resolved,
+            integrity
           })
         })
       })
