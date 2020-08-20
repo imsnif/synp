@@ -1,9 +1,9 @@
 'use strict'
 
-const path = require('path')
+const { join, sep } = require('path')
 
 function parentPackagePath (parentPath) {
-  const nmPos = ('/' + parentPath).lastIndexOf('/node_modules/')
+  const nmPos = (sep + parentPath).lastIndexOf(`${sep}node_modules${sep}`)
 
   if (nmPos === -1) {
     throw new Error('Could not find parent dir!')
@@ -13,7 +13,7 @@ function parentPackagePath (parentPath) {
 }
 
 function findDepVersion (dep, nodeModulesTree, parentPath) {
-  const depPath = path.join(parentPath, 'node_modules', dep)
+  const depPath = join(parentPath, 'node_modules', dep)
   if (nodeModulesTree[depPath]) {
     const { version } = nodeModulesTree[depPath]
     return version
