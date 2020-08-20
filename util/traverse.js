@@ -9,7 +9,7 @@ function parentPackagePath (parentPath) {
     throw new Error('Could not find parent dir!')
   }
 
-  return parentPath.slice(0, nmPos && nmPos - 1)
+  return parentPath.slice(0, nmPos && nmPos - sep.length)
 }
 
 function findDepVersion (dep, nodeModulesTree, parentPath) {
