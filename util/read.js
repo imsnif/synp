@@ -3,7 +3,9 @@
 const { readFileSync } = require('fs')
 
 module.exports = {
-  readJson (path) {
-    return JSON.parse(readFileSync(path).toString('utf-8').trim())
+  read (path, skipParse) {
+    const contents = readFileSync(path).toString('utf-8')
+
+    return skipParse ? contents : JSON.parse(contents.trim())
   }
 }

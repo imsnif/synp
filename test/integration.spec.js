@@ -310,6 +310,26 @@ test('error => no source files', async t => {
   }
 })
 
+test('error => workspace is required but `--with-workspace` flag is missed', async t => {
+  t.plan(2)
+  try {
+    const path = `${__dirname}/fixtures/yarn-workspace`
+    t.throws(
+      () => npmToYarn(path),
+      /Pass `--with-workspaces` flag to enable/,
+      'proper error thrown from npmToYarn when flag is missed'
+    )
+    t.throws(
+      () => yarnToNpm(path),
+      /Pass `--with-workspaces` flag to enable/,
+      'proper error thrown from yarnToNpm when flag is missed'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
 test('translate package-lock to yarn.lock when integrity url hash is absent, but integrity field is present', async t => {
   try {
     t.plan(1)
@@ -402,9 +422,10 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
     const path = `${__dirname}/fixtures/yarn-workspace`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const withWorkspace = true
 
     fs.writeFileSync(`${path}/yarn.lock`, yarnLockSnap)
-    const packageLock = yarnToNpm(path)
+    const packageLock = yarnToNpm(path, withWorkspace)
     t.deepEquals(
       JSON.parse(packageLock),
       JSON.parse(packageLockSnap),
@@ -412,7 +433,7 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
     )
 
     fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
-    const yarnLock = npmToYarn(path)
+    const yarnLock = npmToYarn(path, withWorkspace)
     t.deepEquals(
       lockfile.parse(yarnLock),
       lockfile.parse(yarnLockSnap),
@@ -430,9 +451,10 @@ test('translate yarn.lock to package-lock.json for workspaces with cross-refs ',
     const path = `${__dirname}/fixtures/yarn-workspace-with-cross-refs`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+    const withWorkspace = true
 
     fs.writeFileSync(`${path}/yarn.lock`, yarnLockSnap)
-    const packageLock = yarnToNpm(path)
+    const packageLock = yarnToNpm(path, withWorkspace)
     t.deepEquals(
       JSON.parse(packageLock),
       JSON.parse(packageLockSnap),
@@ -440,7 +462,7 @@ test('translate yarn.lock to package-lock.json for workspaces with cross-refs ',
     )
 
     fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
-    const yarnLock = npmToYarn(path)
+    const yarnLock = npmToYarn(path, withWorkspace)
     t.deepEquals(
       lockfile.parse(yarnLock),
       lockfile.parse(yarnLockSnap),
