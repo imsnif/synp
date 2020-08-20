@@ -423,3 +423,31 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
     t.end()
   }
 })
+
+test('translate yarn.lock to package-lock.json for workspaces with cross-refs ', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/yarn-workspace-with-cross-refs`
+    const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+
+    fs.writeFileSync(`${path}/yarn.lock`, yarnLockSnap)
+    const packageLock = yarnToNpm(path)
+    t.deepEquals(
+      JSON.parse(packageLock),
+      JSON.parse(packageLockSnap),
+      'result is equal to package-lock.json snapshot'
+    )
+
+    fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
+    const yarnLock = npmToYarn(path)
+    t.deepEquals(
+      lockfile.parse(yarnLock),
+      lockfile.parse(yarnLockSnap),
+      'result is equal to yarn.lock snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
