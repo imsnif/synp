@@ -1,6 +1,7 @@
 'use strict'
 
 const test = require('tape')
+const sinon = require('sinon')
 const fs = require('fs')
 const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
@@ -310,20 +311,27 @@ test('error => no source files', async t => {
   }
 })
 
-test('error => workspace is required but `--with-workspace` flag is missed', async t => {
+test('warn if `--with-workspace` flag is missed', async t => {
   t.plan(2)
   try {
     const path = `${__dirname}/fixtures/yarn-workspace`
-    t.throws(
-      () => npmToYarn(path),
-      /Pass `--with-workspaces` flag to enable/,
-      'proper error thrown from npmToYarn when flag is missed'
+    const warning = 'Workspace (npm lockfile v2) support is experimental. Pass `--with-workspaces` flag to enable and cross your fingers. Good luck!'
+
+    sinon.spy(console, 'warn')
+    npmToYarn(path)
+    yarnToNpm(path)
+
+    t.ok(
+      console.warn.alwaysCalledWithExactly(warning),
+      'console prints same warning for npmToYarn & yarnToNpm calls'
     )
-    t.throws(
-      () => yarnToNpm(path),
-      /Pass `--with-workspaces` flag to enable/,
-      'proper error thrown from yarnToNpm when flag is missed'
+
+    t.ok(
+      console.warn.calledTwice,
+      'console prints warning each time when it`s required'
     )
+
+    console.warn.restore()
   } catch (e) {
     t.fail(e.stack)
     t.end()
