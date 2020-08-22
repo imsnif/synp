@@ -1,0 +1,13 @@
+{
+  "name": "integrity-mix",
+  "version": "1.0.0",
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "@semantic-release/npm": {
+      "version": "7.0.5",
+      "resolved": "https://registry.npmjs.org/@semantic-release/npm/-/npm-7.0.5.tgz",
+      "integrity": "sha1-YcRWkau4Y/aTnMpqrJWNPCJQhjI= sha512-D+oEmsx9aHE1q806NFQwSC9KdBO8ri/VO99eEz0wWbX2jyLqVyWr7t0IjKC8aSnkkQswg/4KN/ZjfF6iz1XOpw=="
+    }
+  }
+}
