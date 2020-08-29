@@ -1,0 +1,8 @@
+{
+  "name": "integrity-mix",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@semantic-release/npm": "^7.0.0"
+  }
+}
