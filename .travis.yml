@@ -3,3 +3,11 @@ node_js:
   - "node"
 after_script:
   - npm run coveralls
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
+  on:
+    branch: master
