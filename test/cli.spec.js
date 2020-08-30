@@ -8,7 +8,7 @@ const { mocks, mockProgram } = require('./mocks')
 
 test('cli tool converts yarn.lock to package-lock.json', async t => {
   t.plan(4)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -49,7 +49,7 @@ test('cli tool converts yarn.lock to package-lock.json', async t => {
 
 test('cli tool converts package-lock.json to yarn.lock', async t => {
   t.plan(4)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -90,7 +90,7 @@ test('cli tool converts package-lock.json to yarn.lock', async t => {
 
 test('cli prints help and exits with no source file', async t => {
   t.plan(5)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -121,7 +121,7 @@ test('cli prints help and exits with no source file', async t => {
 
 test('cli prints help and exits with bad source file', async t => {
   t.plan(5)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -152,7 +152,7 @@ test('cli prints help and exits with bad source file', async t => {
 
 test('cli prints help and exits when source file does not exist', async t => {
   t.plan(5)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -184,7 +184,7 @@ test('cli prints help and exits when source file does not exist', async t => {
 
 test('cli prints help and exits when destination file exists', async t => {
   t.plan(5)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -208,7 +208,7 @@ test('cli prints help and exits when destination file exists', async t => {
 
 test('cli prints help and exits when destination file exists', async t => {
   t.plan(5)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -232,7 +232,7 @@ test('cli prints help and exits when destination file exists', async t => {
 
 test('cli tool converts yarn.lock to package-lock.json when destination file exists using force', async t => {
   t.plan(4)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'
@@ -266,7 +266,7 @@ test('cli tool converts yarn.lock to package-lock.json when destination file exi
 
 test('cli tool converts package-lock.json to yarn.lock when destination file exists using force', async t => {
   t.plan(4)
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   try {
     const packagePath = '/foo/bar/baz'
     const yarnPath = '/foo/bar/baz/yarn.lock'

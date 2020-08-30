@@ -31,7 +31,7 @@
     "@yarnpkg/lockfile": "^1.1.0",
     "bash-glob": "^2.0.0",
     "colors": "^1.4.0",
-    "commander": "^6.0.0",
+    "commander": "^6.1.0",
     "eol": "^0.9.1",
     "lodash": "4.17.20",
     "nmtree": "^1.0.6",
@@ -42,7 +42,7 @@
     "@semantic-release/changelog": "^5.0.1",
     "coveralls": "^3.1.0",
     "nyc": "15.1.0",
-    "sinon": "^4.5.0",
+    "sinon": "^9.0.3",
     "standard": "^14.3.4",
     "tape": "^5.0.1"
   }
