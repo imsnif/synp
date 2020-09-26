@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/imsnif/synp/compare/v1.9.0...v1.9.1) (2020-09-26)
+
+
+### Bug Fixes
+
+* attach deps meta to pkg-lock resolved entries ([51db17f](https://github.com/imsnif/synp/commit/51db17f4ed03b4eadc21337617572d6a648a3b22)), closes [#55](https://github.com/imsnif/synp/issues/55)
+
 # [1.9.0](https://github.com/imsnif/synp/compare/v1.8.3...v1.9.0) (2020-09-26)
 
 
