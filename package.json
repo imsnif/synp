@@ -46,7 +46,7 @@
     "@semantic-release/npm": "^7.0.6",
     "coveralls": "^3.1.0",
     "nyc": "15.1.0",
-    "semantic-release": "^17.1.1",
+    "semantic-release": "^17.1.2",
     "sinon": "^9.0.3",
     "standard": "^14.3.4",
     "tape": "^5.0.1"
