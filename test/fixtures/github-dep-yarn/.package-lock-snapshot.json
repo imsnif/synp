@@ -12,7 +12,7 @@
     "throng": {
       "version": "github:mixmaxhq/throng#8a015a378c2c0db0c760b2147b2468a1c1e86edf",
       "requires": {
-        "lodash.defaults": "4.2.0"
+        "lodash.defaults": "^4.0.1"
       }
     }
   }

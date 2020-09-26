@@ -71,7 +71,7 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
     const path = `${__dirname}/fixtures/multiple-level-deps`
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const res = yarnToNpm(path).replace(
-      /registry.yarnpkg.com/g,
+      /registry\.yarnpkg\.com/g,
       'registry.npmjs.org'
     )
     const resParsed = JSON.parse(res)
