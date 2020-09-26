@@ -379,15 +379,6 @@ test('translate yarn.lock to package-lock.json and vice versa when integrity con
       lockfile.parse(yarnLockSnap),
       'result is equal to yarn.lock snapshot'
     )
-
-    /* const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
-    const res = npmToYarn(path)
-
-    t.deepEquals(
-      lockfile.parse(res),
-      lockfile.parse(yarnLock),
-      'result is equal to yarn.lock snapshot'
-    ) */
   } catch (e) {
     t.fail(e.stack)
     t.end()
@@ -511,6 +502,35 @@ test('translate yarn.lock to package-lock.json for workspaces with cross-refs ',
     fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
     const yarnLock = npmToYarn(path, withWorkspace)
 
+    t.deepEquals(
+      lockfile.parse(yarnLock),
+      lockfile.parse(yarnLockSnap),
+      'result is equal to yarn.lock snapshot'
+    )
+  } catch (e) {
+    t.fail(e.stack)
+    t.end()
+  }
+})
+
+test('handle composite version notation in package.json', async t => {
+  try {
+    t.plan(2)
+    const path = `${__dirname}/fixtures/composite-pkg-version`
+    const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
+    const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
+
+    fs.writeFileSync(`${path}/yarn.lock`, yarnLockSnap)
+    const pkgLock = yarnToNpm(path)
+
+    t.deepEquals(
+      JSON.parse(pkgLock),
+      JSON.parse(packageLockSnap),
+      'result is equal to package-lock.json snapshot'
+    )
+
+    fs.writeFileSync(`${path}/package-lock.json`, packageLockSnap)
+    const yarnLock = npmToYarn(path)
     t.deepEquals(
       lockfile.parse(yarnLock),
       lockfile.parse(yarnLockSnap),

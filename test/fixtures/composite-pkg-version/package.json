@@ -1,0 +1,8 @@
+{
+  "name": "composite-pkg-version",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@hot-loader/react-dom": "^16.13.0"
+  }
+}
