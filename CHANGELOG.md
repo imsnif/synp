@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/imsnif/synp/compare/v1.8.3...v1.9.0) (2020-09-26)
+
+
+### Features
+
+* support composite version syntax in pkg.json ([012bb94](https://github.com/imsnif/synp/commit/012bb946fa4e8df127112c670a6328daae8602d5)), closes [#53](https://github.com/imsnif/synp/issues/53)
+
 ## [1.8.3](https://github.com/imsnif/synp/compare/v1.8.2...v1.8.3) (2020-09-26)
 
 
