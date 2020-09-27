@@ -18,6 +18,7 @@
   "scripts": {
     "test": "standard && npm run test:unit",
     "test:unit": "tape ./test/*.spec.js",
+    "test:integration": "cli/synp.js -s yarn.lock",
     "coverage": "nyc --reporter=lcov npm test",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
