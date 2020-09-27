@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/imsnif/synp/compare/v1.9.1...v1.9.2) (2020-09-27)
+
+
+### Bug Fixes
+
+* produced pkg-lock should be consistent with node_modules contents ([49e1e4a](https://github.com/imsnif/synp/commit/49e1e4a7d2584a85ab88ccac318c1c1ae94ebbdf))
+
 ## [1.9.1](https://github.com/imsnif/synp/compare/v1.9.0...v1.9.1) (2020-09-26)
 
 
