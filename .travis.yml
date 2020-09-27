@@ -1,13 +1,30 @@
 language: node_js
-node_js:
-  - "node"
-after_script:
-  - npm run coveralls
+node_js: 14
 
-deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-    - yarn semantic-release
-  on:
-    branch: master
+jobs:
+  include:
+    - &test
+      stage: test
+      os: linux
+      install: yarn
+      script: yarn test
+      after_script: npm run coveralls
+      workspaces:
+        create:
+          name: shared
+          paths:
+            - node_modules
+
+    - <<: *test
+      os: windows
+      env: YARN_GPG=no
+      script: cli/synp.js -s yarn.lock
+      after_script: skip
+      workspaces:
+
+    - stage: release
+      if: branch = master AND type != pull_request
+      workspaces:
+        use: shared
+      install: skip
+      script: yarn release
