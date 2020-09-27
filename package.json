@@ -20,7 +20,8 @@
     "test:unit": "tape ./test/*.spec.js",
     "test:integration": "cli/synp.js -s yarn.lock",
     "coverage": "nyc --reporter=lcov npm test",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "release": "semantic-release"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
