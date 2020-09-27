@@ -1,3 +1,10 @@
+## [1.9.3](https://github.com/imsnif/synp/compare/v1.9.2...v1.9.3) (2020-09-27)
+
+
+### Bug Fixes
+
+* fix path regex for win32 ([376ec91](https://github.com/imsnif/synp/commit/376ec9131dd7b66ccca11b709faf36804b6ac906))
+
 ## [1.9.2](https://github.com/imsnif/synp/compare/v1.9.1...v1.9.2) (2020-09-27)
 
 
