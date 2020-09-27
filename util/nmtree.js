@@ -1,3 +1,5 @@
+'use strict'
+
 const nmtree = require('nmtree')
 const semver = require('semver')
 
