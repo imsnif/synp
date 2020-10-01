@@ -1,6 +1,6 @@
 {
   "name": "synp",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Convert yarn.lock to package-lock.json and vice versa",
   "keywords": [
     "yarn",

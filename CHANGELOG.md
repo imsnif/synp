@@ -1,3 +1,10 @@
+## [1.9.4](https://github.com/imsnif/synp/compare/v1.9.3...v1.9.4) (2020-10-01)
+
+
+### Bug Fixes
+
+* mark all the packages that are out of `dependencies` as `dev` ([f6dbccd](https://github.com/imsnif/synp/commit/f6dbccd45ed904a05df4aac2b072359e688734ef)), closes [#59](https://github.com/imsnif/synp/issues/59)
+
 ## [1.9.3](https://github.com/imsnif/synp/compare/v1.9.2...v1.9.3) (2020-09-27)
 
 
