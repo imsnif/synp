@@ -7,7 +7,8 @@
     "lodash.defaults": {
       "version": "4.2.0",
       "resolved": "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz",
-      "integrity": "sha1-0JF4cW/+pN3p5ft7N/bwgCJ0WAw="
+      "integrity": "sha1-0JF4cW/+pN3p5ft7N/bwgCJ0WAw=",
+      "dev": true
     },
     "throng": {
       "version": "github:mixmaxhq/throng#8a015a378c2c0db0c760b2147b2468a1c1e86edf",

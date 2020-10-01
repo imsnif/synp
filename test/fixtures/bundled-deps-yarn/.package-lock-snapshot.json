@@ -7,7 +7,8 @@
     "agent-base": {
       "version": "1.0.2",
       "resolved": "https://registry.yarnpkg.com/agent-base/-/agent-base-1.0.2.tgz",
-      "integrity": "sha1-aJDT+yFwBLYrcPiSjg+uX4lSpwY="
+      "integrity": "sha1-aJDT+yFwBLYrcPiSjg+uX4lSpwY=",
+      "dev": true
     },
     "concat-stream": {
       "version": "1.6.0",
@@ -15,10 +16,16 @@
       "integrity": "sha1-CqxmL9Ur54lk1VMvaUeE5wEQrPc=",
       "requires": {
         "inherits": "^2.0.3",
-        "typedarray": "^0.0.6",
-        "readable-stream": "^2.2.2"
+        "readable-stream": "^2.2.2",
+        "typedarray": "^0.0.6"
       },
       "dependencies": {
+        "isarray": {
+          "version": "1.0.0",
+          "resolved": "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz",
+          "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=",
+          "dev": true
+        },
         "readable-stream": {
           "version": "2.3.3",
           "resolved": "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.3.tgz",
@@ -31,12 +38,8 @@
             "safe-buffer": "~5.1.1",
             "string_decoder": "~1.0.3",
             "util-deprecate": "~1.0.1"
-          }
-        },
-        "isarray": {
-          "version": "1.0.0",
-          "resolved": "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz",
-          "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
+          },
+          "dev": true
         },
         "string_decoder": {
           "version": "1.0.3",
@@ -44,14 +47,17 @@
           "integrity": "sha1-D8Z9fBQYJd6UKC3VNr7GubzoYKs=",
           "requires": {
             "safe-buffer": "~5.1.0"
-          }
+          },
+          "dev": true
         }
-      }
+      },
+      "dev": true
     },
     "core-util-is": {
       "version": "1.0.2",
       "resolved": "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz",
-      "integrity": "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac="
+      "integrity": "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=",
+      "dev": true
     },
     "debug": {
       "version": "2.6.9",
@@ -59,12 +65,14 @@
       "integrity": "sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8=",
       "requires": {
         "ms": "2.0.0"
-      }
+      },
+      "dev": true
     },
     "extend": {
       "version": "3.0.1",
       "resolved": "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz",
-      "integrity": "sha1-p1Xqe8Gt/MWjHOfnYtuq3F5jZEQ="
+      "integrity": "sha1-p1Xqe8Gt/MWjHOfnYtuq3F5jZEQ=",
+      "dev": true
     },
     "https-proxy-agent": {
       "version": "0.3.6",
@@ -74,27 +82,32 @@
         "agent-base": "~1.0.1",
         "debug": "2",
         "extend": "3"
-      }
+      },
+      "dev": true
     },
     "inherits": {
       "version": "2.0.3",
       "resolved": "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz",
-      "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4="
+      "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=",
+      "dev": true
     },
     "isarray": {
       "version": "0.0.1",
       "resolved": "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz",
-      "integrity": "sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8="
+      "integrity": "sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=",
+      "dev": true
     },
     "json-stringify-safe": {
       "version": "5.0.1",
       "resolved": "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz",
-      "integrity": "sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus="
+      "integrity": "sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=",
+      "dev": true
     },
     "ms": {
       "version": "2.0.0",
       "resolved": "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz",
-      "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
+      "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=",
+      "dev": true
     },
     "newrelic": {
       "version": "1.40.0",
@@ -114,8 +127,8 @@
           "integrity": "sha1-CqxmL9Ur54lk1VMvaUeE5wEQrPc=",
           "requires": {
             "inherits": "^2.0.3",
-            "typedarray": "^0.0.6",
-            "readable-stream": "^2.2.2"
+            "readable-stream": "^2.2.2",
+            "typedarray": "^0.0.6"
           },
           "dependencies": {
             "inherits": {
@@ -163,15 +176,20 @@
           "integrity": "sha1-fPTFTvZI44EwhMY23SB54WbAgdk=",
           "requires": {
             "core-util-is": "~1.0.0",
+            "inherits": "~2.0.1",
             "isarray": "0.0.1",
-            "string_decoder": "~0.10.x",
-            "inherits": "~2.0.1"
+            "string_decoder": "~0.10.x"
           },
           "dependencies": {
             "core-util-is": {
               "version": "1.0.2",
               "resolved": "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz",
               "integrity": "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac="
+            },
+            "inherits": {
+              "version": "2.0.3",
+              "resolved": "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz",
+              "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4="
             },
             "isarray": {
               "version": "0.0.1",
@@ -182,11 +200,6 @@
               "version": "0.10.31",
               "resolved": "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz",
               "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
-            },
-            "inherits": {
-              "version": "2.0.3",
-              "resolved": "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz",
-              "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4="
             }
           }
         }
@@ -195,7 +208,8 @@
     "process-nextick-args": {
       "version": "1.0.7",
       "resolved": "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz",
-      "integrity": "sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M="
+      "integrity": "sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M=",
+      "dev": true
     },
     "readable-stream": {
       "version": "1.1.14",
@@ -203,35 +217,41 @@
       "integrity": "sha1-fPTFTvZI44EwhMY23SB54WbAgdk=",
       "requires": {
         "core-util-is": "~1.0.0",
+        "inherits": "~2.0.1",
         "isarray": "0.0.1",
-        "string_decoder": "~0.10.x",
-        "inherits": "~2.0.1"
-      }
+        "string_decoder": "~0.10.x"
+      },
+      "dev": true
     },
     "safe-buffer": {
       "version": "5.1.1",
       "resolved": "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz",
-      "integrity": "sha1-iTMSr2myEj3vcfV4iQAWce6yyFM="
+      "integrity": "sha1-iTMSr2myEj3vcfV4iQAWce6yyFM=",
+      "dev": true
     },
     "semver": {
       "version": "5.4.1",
       "resolved": "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz",
-      "integrity": "sha1-4FnAnYVx8FQII3M0M1BdOi8AsY4="
+      "integrity": "sha1-4FnAnYVx8FQII3M0M1BdOi8AsY4=",
+      "dev": true
     },
     "string_decoder": {
       "version": "0.10.31",
       "resolved": "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz",
-      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
+      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=",
+      "dev": true
     },
     "typedarray": {
       "version": "0.0.6",
       "resolved": "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz",
-      "integrity": "sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c="
+      "integrity": "sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=",
+      "dev": true
     },
     "util-deprecate": {
       "version": "1.0.2",
       "resolved": "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz",
-      "integrity": "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
+      "integrity": "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=",
+      "dev": true
     }
   }
 }

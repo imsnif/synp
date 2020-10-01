@@ -34,13 +34,15 @@
       "license": "ISC",
       "dependencies": {
         "lodash": "4.17.0"
-      }
+      },
+      "dev": true
     },
     "packages/bar/node_modules/lodash": {
       "version": "4.17.0",
       "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.17.0.tgz",
       "integrity": "sha1-k/RGblq3PlofEhbDTuoRU18KjfU=",
-      "license": "MIT"
+      "license": "MIT",
+      "dev": true
     },
     "packages/foo": {
       "version": "1.0.0",
@@ -48,18 +50,21 @@
       "dependencies": {
         "bar": "^1.0.0",
         "lodash": "4.0.0"
-      }
+      },
+      "dev": true
     },
     "packages/foo/node_modules/lodash": {
       "version": "4.0.0",
       "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.0.0.tgz",
       "integrity": "sha1-msQ4RMWV4o0wEIt7pYNwM5WSLfw=",
-      "license": "MIT"
+      "license": "MIT",
+      "dev": true
     }
   },
   "dependencies": {
     "bar": {
       "version": "file:packages/bar",
+      "dev": true,
       "requires": {
         "lodash": "4.17.0"
       },
@@ -67,12 +72,14 @@
         "lodash": {
           "version": "4.17.0",
           "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.17.0.tgz",
-          "integrity": "sha1-k/RGblq3PlofEhbDTuoRU18KjfU="
+          "integrity": "sha1-k/RGblq3PlofEhbDTuoRU18KjfU=",
+          "dev": true
         }
       }
     },
     "foo": {
       "version": "file:packages/foo",
+      "dev": true,
       "requires": {
         "bar": "^1.0.0",
         "lodash": "4.0.0"
@@ -81,7 +88,8 @@
         "lodash": {
           "version": "4.0.0",
           "resolved": "https://registry.yarnpkg.com/lodash/-/lodash-4.0.0.tgz",
-          "integrity": "sha1-msQ4RMWV4o0wEIt7pYNwM5WSLfw="
+          "integrity": "sha1-msQ4RMWV4o0wEIt7pYNwM5WSLfw=",
+          "dev": true
         }
       }
     },

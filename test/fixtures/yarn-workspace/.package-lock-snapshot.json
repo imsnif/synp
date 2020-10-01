@@ -44,7 +44,8 @@
       "license": "ISC",
       "dependencies": {
         "@antongolub/empty-package": "5.0.0"
-      }
+      },
+      "dev": true
     },
     "packages/bar/node_modules/@antongolub/empty-package": {
       "version": "5.0.0",
@@ -53,7 +54,8 @@
       "license": "MIT",
       "dependencies": {
         "@antongolub/empty-package": "^4.0.1"
-      }
+      },
+      "dev": true
     },
     "packages/bar/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package": {
       "version": "4.0.1",
@@ -62,26 +64,30 @@
       "license": "MIT",
       "dependencies": {
         "@antongolub/empty-package": "^3.1.2"
-      }
+      },
+      "dev": true
     },
     "packages/bar/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package/node_modules/@antongolub/empty-package": {
       "version": "3.1.2",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz",
       "integrity": "sha1-7PQpU1b22rrJp5OhCWmmVZ/Crbs=",
-      "license": "MIT"
+      "license": "MIT",
+      "dev": true
     },
     "packages/foo-package-dir": {
       "version": "1.0.0",
       "license": "ISC",
       "dependencies": {
         "@antongolub/empty-package": "^2.0.0"
-      }
+      },
+      "dev": true
     },
     "packages/foo-package-dir/node_modules/@antongolub/empty-package": {
       "version": "2.1.0",
       "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz",
       "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM=",
-      "license": "MIT"
+      "license": "MIT",
+      "dev": true
     }
   },
   "dependencies": {
@@ -92,6 +98,7 @@
     },
     "bar": {
       "version": "file:packages/bar",
+      "dev": true,
       "requires": {
         "@antongolub/empty-package": "5.0.0"
       },
@@ -115,16 +122,20 @@
                 "@antongolub/empty-package": {
                   "version": "3.1.2",
                   "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-3.1.2.tgz",
-                  "integrity": "sha1-7PQpU1b22rrJp5OhCWmmVZ/Crbs="
+                  "integrity": "sha1-7PQpU1b22rrJp5OhCWmmVZ/Crbs=",
+                  "dev": true
                 }
-              }
+              },
+              "dev": true
             }
-          }
+          },
+          "dev": true
         }
       }
     },
     "foo": {
       "version": "file:packages/foo-package-dir",
+      "dev": true,
       "requires": {
         "@antongolub/empty-package": "^2.0.0"
       },
@@ -132,7 +143,8 @@
         "@antongolub/empty-package": {
           "version": "2.1.0",
           "resolved": "https://registry.yarnpkg.com/@antongolub/empty-package/-/empty-package-2.1.0.tgz",
-          "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM="
+          "integrity": "sha1-KAe0FiobazUpdSGAefNIwi2rWEM=",
+          "dev": true
         }
       }
     },
