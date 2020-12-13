@@ -1,11 +1,15 @@
+os: linux
+dist: focal
+
 language: node_js
 node_js: 14
+cache: yarn
+install: skip
 
 jobs:
   include:
     - &test
       stage: test
-      os: linux
       install: yarn
       script: yarn test
       after_script: npm run coveralls
@@ -16,6 +20,7 @@ jobs:
             - node_modules
 
     - <<: *test
+      if: branch = master AND type = pull_request
       os: windows
       env: YARN_GPG=no
       script: cli/synp.js -s yarn.lock
@@ -26,5 +31,4 @@ jobs:
       if: branch = master AND type != pull_request
       workspaces:
         use: shared
-      install: skip
       script: yarn release
