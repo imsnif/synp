@@ -1,3 +1,10 @@
+## [1.9.5](https://github.com/imsnif/synp/compare/v1.9.4...v1.9.5) (2020-12-13)
+
+
+### Performance Improvements
+
+* **package:** deps revision ([4af9990](https://github.com/imsnif/synp/commit/4af9990063377b5cc2d32b9d6931ac6b1405408c))
+
 ## [1.9.4](https://github.com/imsnif/synp/compare/v1.9.3...v1.9.4) (2020-10-01)
 
 
