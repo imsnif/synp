@@ -19,10 +19,13 @@
     "test": "standard && npm run test:unit",
     "test:unit": "tape ./test/*.spec.js",
     "test:integration": "cli/synp.js -s yarn.lock",
+    "test:depcheck": "npx depcheck --ignores \"@semantic-release/*\"",
+    "test:depaudit": "npx yarn-audit-fix",
+    "test:deps": "yarn test:depcheck && yarn test:depaudit",
     "coverage": "nyc --reporter=lcov npm test",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "release": "semantic-release",
-    "postupdate": "yarn && npx yarn-audit-fix && yarn test"
+    "postupdate": "yarn && yarn test:deps && yarn test"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
@@ -38,7 +41,6 @@
     "eol": "^0.9.1",
     "lodash": "4.17.20",
     "nmtree": "^1.0.6",
-    "request": "^2.88.2",
     "semver": "^7.3.2",
     "sort-object-keys": "^1.1.3"
   },
