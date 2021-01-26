@@ -5,6 +5,7 @@ const sinon = require('sinon')
 const fs = require('fs')
 const lockfile = require('@yarnpkg/lockfile')
 const { yarnToNpm, npmToYarn } = require('../')
+const fixtures = require('path').resolve(__dirname, 'fixtures')
 const {
   findNonSha1Hashes,
   replaceNonSha1,
@@ -14,7 +15,7 @@ const {
 test('translate with one root dependency', async t => {
   t.plan(2)
   try {
-    const path = `${__dirname}/fixtures/single-root-dep`
+    const path = `${fixtures}/single-root-dep`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     t.deepEquals(
@@ -36,7 +37,7 @@ test('translate with one root dependency', async t => {
 test('translate package-lock to yarn.lock with multiple-level dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/multiple-level-deps`
+    const path = `${fixtures}/multiple-level-deps`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const res = lockfile.parse(
@@ -68,7 +69,7 @@ test('translate package-lock to yarn.lock with multiple-level dependencies', asy
 test('translate yarn.lock to package-lock with multiple-level dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/multiple-level-deps`
+    const path = `${fixtures}/multiple-level-deps`
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const res = yarnToNpm(path).replace(
       /registry\.yarnpkg\.com/g,
@@ -101,7 +102,7 @@ test('translate yarn.lock to package-lock with multiple-level dependencies', asy
 test('translate package-lock to yarn.lock with scopes', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/deps-with-scopes`
+    const path = `${fixtures}/deps-with-scopes`
     const yarnLock = fs.readFileSync(`${path}/yarn.lock`, 'utf-8')
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const res = lockfile.parse(npmToYarn(path).replace(
@@ -134,7 +135,7 @@ test('translate package-lock to yarn.lock with scopes', async t => {
 test('translate yarn.lock to package-lock with scopes', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/deps-with-scopes`
+    const path = `${fixtures}/deps-with-scopes`
     const packageLock = fs.readFileSync(`${path}/package-lock.json`, 'utf-8')
     const res = yarnToNpm(path).replace(
       /registry.yarnpkg.com/g,
@@ -164,7 +165,7 @@ test('translate yarn.lock to package-lock with scopes', async t => {
 test('translate package-lock to yarn.lock with bundled dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/bundled-deps-npm`
+    const path = `${fixtures}/bundled-deps-npm`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const res = npmToYarn(path)
     t.deepEquals(
@@ -181,7 +182,7 @@ test('translate package-lock to yarn.lock with bundled dependencies', async t =>
 test('translate yarn.lock to package-lock with bundled dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/bundled-deps-yarn`
+    const path = `${fixtures}/bundled-deps-yarn`
     const packageLock = fs.readFileSync(
       `${path}/.package-lock-snapshot.json`,
       'utf-8'
@@ -201,7 +202,7 @@ test('translate yarn.lock to package-lock with bundled dependencies', async t =>
 test('translate yarn.lock to package-lock with github dependencies', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/github-dep-yarn`
+    const path = `${fixtures}/github-dep-yarn`
     const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const res = yarnToNpm(path)
     t.deepEquals(
@@ -218,7 +219,7 @@ test('translate yarn.lock to package-lock with github dependencies', async t => 
 test('translate yarn.lock to package-lock with crlf line ending', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/yarn-crlf`
+    const path = `${fixtures}/yarn-crlf`
     const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const res = yarnToNpm(path)
     t.deepEquals(
@@ -235,7 +236,7 @@ test('translate yarn.lock to package-lock with crlf line ending', async t => {
 test('translate corrupted package-lock to yarn.lock', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/single-dep-corrupted-version`
+    const path = `${fixtures}/single-dep-corrupted-version`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const res = npmToYarn(path)
     const resParsed = lockfile.parse(res)
@@ -254,7 +255,7 @@ test('translate corrupted package-lock to yarn.lock', async t => {
 test('error => no source file', async t => {
   t.plan(2)
   try {
-    const path = `${__dirname}/fixtures/foo`
+    const path = `${fixtures}/foo`
     t.throws(
       () => npmToYarn(path),
       /no such file or directory/,
@@ -274,7 +275,7 @@ test('error => no source file', async t => {
 test('error => no package.json', async t => {
   t.plan(2)
   try {
-    const path = `${__dirname}/fixtures/no-package-json`
+    const path = `${fixtures}/no-package-json`
     t.throws(
       () => npmToYarn(path),
       /no such file or directory/,
@@ -294,7 +295,7 @@ test('error => no package.json', async t => {
 test('error => no source files', async t => {
   t.plan(2)
   try {
-    const path = `${__dirname}/fixtures/no-source-files`
+    const path = `${fixtures}/no-source-files`
     t.throws(
       () => npmToYarn(path),
       /no such file or directory/,
@@ -314,7 +315,7 @@ test('error => no source files', async t => {
 test('warn if `--with-workspace` flag is missed', async t => {
   t.plan(2)
   try {
-    const path = `${__dirname}/fixtures/yarn-workspace`
+    const path = `${fixtures}/yarn-workspace`
     const warning = 'Workspace (npm lockfile v2) support is experimental. Pass `--with-workspaces` flag to enable and cross your fingers. Good luck!'
 
     sinon.spy(console, 'warn')
@@ -341,7 +342,7 @@ test('warn if `--with-workspace` flag is missed', async t => {
 test('translate package-lock to yarn.lock when integrity url hash is absent, but integrity field is present', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/integrity-is-absent`
+    const path = `${fixtures}/integrity-is-absent`
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const yarnLock = npmToYarn(path)
 
@@ -359,7 +360,7 @@ test('translate package-lock to yarn.lock when integrity url hash is absent, but
 test('translate yarn.lock to package-lock.json and vice versa when integrity contains several hashes', async t => {
   try {
     t.plan(2)
-    const path = `${__dirname}/fixtures/integrity-mix`
+    const path = `${fixtures}/integrity-mix`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
 
@@ -388,7 +389,7 @@ test('translate yarn.lock to package-lock.json and vice versa when integrity con
 test('translate yarn.lock to package-lock with tarball', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/tarball-deps`
+    const path = `${fixtures}/tarball-deps`
     const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const res = yarnToNpm(path)
     t.deepEquals(
@@ -405,7 +406,7 @@ test('translate yarn.lock to package-lock with tarball', async t => {
 test('translate yarn.lock to package-lock with git+https', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/git-deps`
+    const path = `${fixtures}/git-deps`
     const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const res = yarnToNpm(path)
     t.deepEquals(
@@ -422,7 +423,7 @@ test('translate yarn.lock to package-lock with git+https', async t => {
 test('translate yarn.lock to package-lock with file', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/file-deps-yarn`
+    const path = `${fixtures}/file-deps-yarn`
     const packageLock = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const res = yarnToNpm(path)
     t.deepEquals(
@@ -439,7 +440,7 @@ test('translate yarn.lock to package-lock with file', async t => {
 test('translate package-lock to yarn.lock with file', async t => {
   try {
     t.plan(1)
-    const path = `${__dirname}/fixtures/file-deps-npm`
+    const path = `${fixtures}/file-deps-npm`
     const yarnLock = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const res = npmToYarn(path)
     t.deepEquals(
@@ -456,7 +457,7 @@ test('translate package-lock to yarn.lock with file', async t => {
 test('translate yarn.lock with workspaces to package-lock and vice versa', async t => {
   try {
     t.plan(2)
-    const path = `${__dirname}/fixtures/yarn-workspace`
+    const path = `${fixtures}/yarn-workspace`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const withWorkspace = true
@@ -485,7 +486,7 @@ test('translate yarn.lock with workspaces to package-lock and vice versa', async
 test('translate yarn.lock to package-lock.json for workspaces with cross-refs ', async t => {
   try {
     t.plan(2)
-    const path = `${__dirname}/fixtures/yarn-workspace-with-cross-refs`
+    const path = `${fixtures}/yarn-workspace-with-cross-refs`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
     const withWorkspace = true
@@ -516,7 +517,7 @@ test('translate yarn.lock to package-lock.json for workspaces with cross-refs ',
 test('handle composite version notation in package.json', async t => {
   try {
     t.plan(2)
-    const path = `${__dirname}/fixtures/composite-pkg-version`
+    const path = `${fixtures}/composite-pkg-version`
     const packageLockSnap = fs.readFileSync(`${path}/.package-lock-snapshot.json`, 'utf-8')
     const yarnLockSnap = fs.readFileSync(`${path}/.yarn-lock-snapshot`, 'utf-8')
 
