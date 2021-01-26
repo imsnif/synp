@@ -11,10 +11,11 @@ const writeOutput = require('./write-output')
 
 module.exports = function run (program) {
   try {
-    const { sourceFile, withWorkspace } = program
+    const options = program.opts()
+    const { sourceFile, withWorkspace } = options
     const sourceFileName = sourceFile && sourceFile.split(path.sep).pop()
-    validateArgs(program, sourceFileName)
-    validatePath(program)
+    validateArgs(options, sourceFileName)
+    validatePath(options)
 
     const convert = sourceFileName === 'yarn.lock'
       ? synp.yarnToNpm

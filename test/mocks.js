@@ -39,9 +39,13 @@ module.exports = {
   },
   mockProgram (sourceFile, force = false) {
     return {
-      sourceFile,
-      outputHelp: sinon.spy(),
-      force
+      opts () {
+        return {
+          sourceFile,
+          force
+        }
+      },
+      outputHelp: sinon.spy()
     }
   }
 }
