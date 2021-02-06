@@ -23,7 +23,7 @@
     "test:depaudit": "npx yarn-audit-fix",
     "test:deps": "yarn test:depcheck && yarn test:depaudit",
     "coverage": "nyc --reporter=lcov npm test",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "push:coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "release": "semantic-release",
     "postupdate": "yarn && yarn test:deps && yarn test"
   },
