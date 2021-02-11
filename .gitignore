@@ -1,3 +1,5 @@
 node_modules
 temp
 !test/fixtures/**/node_modules
+.nyc_output
+coverage
