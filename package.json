@@ -16,16 +16,16 @@
     "synp": "./cli/synp.js"
   },
   "scripts": {
-    "test": "standard && npm run test:unit",
+    "test": "yarn test:lint && yarn cover:unit && yarn test:integration && yarn test:deps",
+    "test:lint": "standard",
     "test:unit": "tape ./test/*.spec.js",
-    "test:integration": "cli/synp.js -s yarn.lock",
-    "test:depcheck": "npx depcheck --ignores \"@semantic-release/*\"",
+    "test:integration": "cli/synp.js -s yarn.lock && rimraf package-lock.json",
+    "test:depcheck": "npx depcheck --ignores @semantic-release/*,semantic-release",
     "test:depaudit": "npx yarn-audit-fix",
     "test:deps": "yarn test:depcheck && yarn test:depaudit",
-    "coverage": "nyc --reporter=lcov npm test",
-    "push:coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "release": "semantic-release",
-    "postupdate": "yarn && yarn test:deps && yarn test"
+    "cover:unit": "nyc --reporter=lcov --reporter=text yarn test:unit",
+    "cover:push": "cat ./coverage/lcov.info | coveralls",
+    "postupdate": "yarn && yarn test"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
@@ -54,6 +54,7 @@
     "semantic-release": "^17.3.8",
     "sinon": "^9.2.4",
     "standard": "^16.0.3",
-    "tape": "^5.1.1"
+    "tape": "^5.1.1",
+    "rimraf": "^3.0.2"
   }
 }
