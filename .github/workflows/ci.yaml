@@ -43,7 +43,9 @@ jobs:
 
       - name: Coveralls
         if: github.ref == 'refs/heads/master'
-        run: yarn cover:push
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
 
   # Full tests for PR
   test_pr:

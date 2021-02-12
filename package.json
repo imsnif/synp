@@ -24,7 +24,6 @@
     "test:depaudit": "npx yarn-audit-fix",
     "test:deps": "yarn test:depcheck && yarn test:depaudit",
     "cover:unit": "nyc --reporter=lcov --reporter=text yarn test:unit",
-    "cover:push": "cat ./coverage/lcov.info | coveralls",
     "postupdate": "yarn && yarn test"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
@@ -49,7 +48,6 @@
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.2.0",
     "@semantic-release/npm": "^7.0.10",
-    "coveralls": "^3.1.0",
     "nyc": "15.1.0",
     "semantic-release": "^17.3.8",
     "sinon": "^9.2.4",
