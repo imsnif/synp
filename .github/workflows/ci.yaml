@@ -45,7 +45,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: coverallsapp/github-action@master
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   # Full tests for PR
   test_pr:
