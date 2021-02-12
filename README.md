@@ -56,4 +56,4 @@ Thankfully, this issue is 100% solvable. In `npm` one can update the checksums s
 3. **something else?** - please open an issue/PR.
 
 ### License
-MIT
+[MIT](./LICENSE.md)
