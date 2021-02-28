@@ -316,7 +316,7 @@ test('warn if `--with-workspace` flag is missed', async t => {
   t.plan(2)
   try {
     const path = `${fixtures}/yarn-workspace`
-    const warning = 'Workspace (npm lockfile v2) support is experimental. Pass `--with-workspaces` flag to enable and cross your fingers. Good luck!'
+    const warning = 'Workspace (npm lockfile v2) support is experimental. Pass `--with-workspace` flag to enable and cross your fingers. Good luck!'
 
     sinon.spy(console, 'warn')
     npmToYarn(path)
