@@ -1,3 +1,10 @@
+## [1.9.7](https://github.com/imsnif/synp/compare/v1.9.6...v1.9.7) (2021-02-28)
+
+
+### Bug Fixes
+
+* use actual options for hints ([10cc940](https://github.com/imsnif/synp/commit/10cc94087df6e3a9cf6d9639c8ac18ed5e9adec3)), closes [#72](https://github.com/imsnif/synp/issues/72)
+
 ## [1.9.6](https://github.com/imsnif/synp/compare/v1.9.5...v1.9.6) (2021-02-12)
 
 
