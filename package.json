@@ -20,11 +20,12 @@
     "test:lint": "standard",
     "test:unit": "tape ./test/*.spec.js",
     "test:integration": "cli/synp.js -s yarn.lock && rimraf package-lock.json",
-    "test:depcheck": "npx depcheck --ignores @semantic-release/*,semantic-release",
-    "test:depaudit": "npx yarn-audit-fix",
+    "test:depcheck": "npm_config_yes=true npx depcheck --ignores @semantic-release/*,semantic-release",
+    "test:depaudit": "yarn audit --level=moderate --groups=dependencies; [[ $? -ge 4 ]] && exit 1 || exit 0",
+    "test:depauditfix": "npm_config_yes=true npx yarn-audit-fix --audit-level=moderate",
     "test:deps": "yarn test:depcheck && yarn test:depaudit",
     "cover:unit": "nyc --reporter=lcov --reporter=text yarn test:unit",
-    "postupdate": "yarn && yarn test"
+    "postupdate": "yarn && yarn test:depauditfix && yarn test"
   },
   "author": "Aram Drevekenin <grimsniffer@gmail.com>",
   "license": "MIT",
@@ -36,23 +37,23 @@
     "@yarnpkg/lockfile": "^1.1.0",
     "bash-glob": "^2.0.0",
     "colors": "^1.4.0",
-    "commander": "^7.1.0",
+    "commander": "^7.2.0",
     "eol": "^0.9.1",
     "lodash": "4.17.21",
     "nmtree": "^1.0.6",
-    "semver": "^7.3.4",
+    "semver": "^7.3.5",
     "sort-object-keys": "^1.1.3"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@semantic-release/github": "^7.2.0",
-    "@semantic-release/npm": "^7.0.10",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.1",
+    "@semantic-release/npm": "^8.0.2",
     "nyc": "15.1.0",
-    "semantic-release": "^17.4.0",
+    "semantic-release": "^18.0.0",
     "sinon": "^9.2.4",
-    "standard": "^16.0.3",
-    "tape": "^5.2.1",
+    "standard": "^16.0.4",
+    "tape": "^5.3.1",
     "rimraf": "^3.0.2"
   }
 }
