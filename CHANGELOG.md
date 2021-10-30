@@ -1,3 +1,10 @@
+## [1.9.8](https://github.com/imsnif/synp/compare/v1.9.7...v1.9.8) (2021-10-30)
+
+
+### Bug Fixes
+
+* update deps, fix some vuls ([d46def3](https://github.com/imsnif/synp/commit/d46def3bd54c63318d9148a778be5f9ddf248527))
+
 ## [1.9.7](https://github.com/imsnif/synp/compare/v1.9.6...v1.9.7) (2021-02-28)
 
 
