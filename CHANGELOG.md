@@ -1,3 +1,9 @@
+## [1.9.9](https://github.com/imsnif/synp/compare/v1.9.8...v1.9.9) (2022-01-10)
+
+### Bug Fixes
+* fix: pin colors dependency ([a3bf502](https://github.com/imsnif/synp/commit/a3bf502267a238ecfc71204185f63e5113bf7188))
+
+
 ## [1.9.8](https://github.com/imsnif/synp/compare/v1.9.7...v1.9.8) (2021-10-30)
 
 
