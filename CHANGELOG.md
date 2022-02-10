@@ -1,3 +1,10 @@
+## [1.9.10](https://github.com/imsnif/synp/compare/v1.9.9...v1.9.10) (2022-02-10)
+
+
+### Performance Improvements
+
+* up tape ([3c16e01](https://github.com/imsnif/synp/commit/3c16e015ded705f274555fbbbe19bc8ddee64c1d))
+
 ## [1.9.9](https://github.com/imsnif/synp/compare/v1.9.8...v1.9.9) (2022-01-10)
 
 ### Bug Fixes
