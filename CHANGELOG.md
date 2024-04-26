@@ -1,3 +1,8 @@
+## [1.9.11](https://github.com/imsnif/synp/compare/v1.9.11...v1.9.10) (2024-04-26)
+
+### Bug Fixes
+* fix: allow for `packageLock.packages` to resolve some package-lock v3 failures
+
 ## [1.9.10](https://github.com/imsnif/synp/compare/v1.9.9...v1.9.10) (2022-02-10)
 
 
