@@ -5,8 +5,15 @@ on: [push, pull_request]
 jobs:
   # Fast unit tests flow
   push:
+    name: Push ${{ github.ref }}
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      checks: read
+      statuses: write
+      contents: write
+      packages: write
+      id-token: write
     steps:
       - name: Checkuout
         uses: actions/checkout@v4
