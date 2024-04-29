@@ -1,3 +1,8 @@
+## [1.9.12](https://github.com/imsnif/synp/compare/v1.9.11...v1.9.12) (2024-04-29)
+
+### Fixes & improvements
+* fix: update semver to handle https://www.npmjs.com/advisories/1096482 ([7173e87](https://github.com/imsnif/synp/commit/7173e8777f7e605bbc295d16b71174dff9a2e4ae))
+
 ## [1.9.11](https://github.com/imsnif/synp/compare/v1.9.10...v1.9.11) (2024-04-29)
 
 ### Fixes & improvements
