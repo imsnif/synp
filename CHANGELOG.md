@@ -1,3 +1,8 @@
+## [1.9.11](https://github.com/imsnif/synp/compare/v1.9.10...v1.9.11) (2024-04-29)
+
+### Fixes & improvements
+* fix: provide support for `packages` when `dependencies` do not exist (package-lock v3) (#104) ([5696017](https://github.com/imsnif/synp/commit/5696017d9f204f5bca2aa93de0e87e692ef11d9a))
+
 ## [1.9.10](https://github.com/imsnif/synp/compare/v1.9.9...v1.9.10) (2022-02-10)
 
 
