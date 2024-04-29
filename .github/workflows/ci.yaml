@@ -36,10 +36,10 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_PROVENANCE: true
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_AUTHOR_NAME: antongolub@antongolub.com
+          GIT_AUTHOR_NAME: Anton Golub
           GIT_AUTHOR_EMAIL: antongolub@antongolub.com
           GIT_COMMITTER_NAME: Anton Golub
-          GIT_COMMITTER_EMAIL: Anton Golub
+          GIT_COMMITTER_EMAIL: antongolub@antongolub.com
         run: npm_config_yes=true npx zx-semrel
 
   # Full tests for PR
