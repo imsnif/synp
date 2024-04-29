@@ -1,3 +1,8 @@
+## [1.9.13](https://github.com/imsnif/synp/compare/v1.9.12...v1.9.13) (2024-04-29)
+
+### Fixes & improvements
+* fix: update token perms to enable npm provenance check ([cdd2886](https://github.com/imsnif/synp/commit/cdd28860983303e5901e62934e06fc8233809655))
+
 ## [1.9.12](https://github.com/imsnif/synp/compare/v1.9.11...v1.9.12) (2024-04-29)
 
 ### Fixes & improvements
