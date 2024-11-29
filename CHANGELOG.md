@@ -1,3 +1,8 @@
+## [1.9.14](https://github.com/imsnif/synp/compare/v1.9.13...v1.9.14) (2024-11-29)
+
+### Fixes & improvements
+* fix: replace bash-glob with fast-glob to omit cross-spawn from prod deps tree ([4b555d7](https://github.com/imsnif/synp/commit/4b555d73045be019b0b9f775f3d2dd9699541516))
+
 ## [1.9.13](https://github.com/imsnif/synp/compare/v1.9.12...v1.9.13) (2024-04-29)
 
 ### Fixes & improvements
