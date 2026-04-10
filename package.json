@@ -39,7 +39,7 @@
     "colors": "1.4.0",
     "commander": "^7.2.0",
     "eol": "^0.10.0",
-    "lodash": "4.17.23",
+    "lodash": "4.18.1",
     "nmtree": "^1.0.6",
     "semver": "^7.6.3",
     "sort-object-keys": "^1.1.3"
